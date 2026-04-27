@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PredTracker 🎯</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0d0d0d; color: #ebebeb; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    input[type=date]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; }
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    select option { background: #1f1f1f; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } = Recharts;
+
+    const KEY = "predtracker-v1";
+    const PLATFORMS = ["Kalshi", "Polymarket", "Metaculus", "Manifold", "Other"];
+    const C = {
+      bg: "#0d0d0d", card: "#161616", card2: "#202020",
+      border: "#2c2c2c", text: "#ebebeb", muted: "#666",
+      green: "#22c55e", red: "#ef4444", yellow: "#f59e0b", purple: "#a855f7",
+    };
+
+    const fmtUSD = n => "$" + Math.abs(n).toLocaleString("en-US");
+    const fmtDate = d => { try { return new Date(d + "T12:00:00").toLocaleDateString("en-US", { day: "numeric", month: "short", year: "2-digit" }); } catch { return d; } };
+    const df = () => ({ market: "", platform: "Kalshi", direction: "YES", amount: "", date: new Date().toISOString().slice(0, 10) });
+
+    const btnSm = c => ({ flex: 1, padding: "6px", border: `1px solid ${c}`, borderRadius: 7, background: c + "20", color: c, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" });
+    const btnAction = c => ({ flex: 1, padding: "8px", border: `1px solid ${c}`, borderRadius: 8, background: c + "18", color: c, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" });
+
+    function PredCard({ p, onResolve, onUnresolve, onDelete, mini }) {
+      const [confirmDel, setConfirmDel] = useState(false);
+      const rc = p.result === "WIN" ? C.green : p.result === "LOSS" ? C.red : C.yellow;
+      const rl = p.result === "WIN" ? "🚀 WIN" : p.result === "LOSS" ? "💀 LOSS" : "⏳ Pending";
+      const bc = p.result === "WIN" ? C.green + "50" : p.result === "LOSS" ? C.red + "50" : C.border;
+      return (
+        <div style={{ background: C.card, border: `1px solid ${bc}`, borderRadius: 12, padding: "12px 14px", marginBottom: 10 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 7 }}>
+            <div style={{ flex: 1, marginRight: 10 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.4, color: C.text }}>{p.market}</div>
+              <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{p.platform} · {fmtDate(p.date)}</div>
+            </div>
+            <span style={{ background: rc + "25", color: rc, borderRadius: 6, padding: "3px 8px", fontSize: 11, fontWeight: 700, whiteSpace: "nowrap" }}>{rl}</span>
+          </div>
+          <div style={{ display: "flex", gap: 6, marginBottom: mini ? 6 : 10 }}>
+            <span style={{ background: (p.direction === "YES" ? C.green : C.red) + "22", color: p.direction === "YES" ? C.green : C.red, borderRadius: 6, padding: "2px 8px", fontSize: 11, fontWeight: 700 }}>
+              {p.direction === "YES" ? "🟢 YES" : "🔴 NO"}
+            </span>
+            <span style={{ background: "#ffffff12", color: C.text, borderRadius: 6, padding: "2px 8px", fontSize: 11, fontWeight: 700 }}>
+              {fmtUSD(p.amount)}
+            </span>
+          </div>
+          {!p.result && mini && (
+            <div style={{ display: "flex", gap: 7 }}>
+              <button onClick={() => onResolve(p.id, "WIN")} style={btnSm(C.green)}>WIN</button>
+              <button onClick={() => onResolve(p.id, "LOSS")} style={btnSm(C.red)}>LOSS</button>
+            </div>
+          )}
+          {!p.result && !mini && (
+            <div style={{ display: "flex", gap: 7 }}>
+              <button onClick={() => onResolve(p.id, "WIN")} style={btnAction(C.green)}>🚀 Mark WIN</button>
+              <button onClick={() => onResolve(p.id, "LOSS")} style={btnAction(C.red)}>💀 Mark LOSS</button>
+              <button onClick={() => confirmDel ? onDelete(p.id) : setConfirmDel(true)} style={{ padding: "8px 11px", border: `1px solid ${confirmDel ? C.red : C.border}`, borderRadius: 8, background: "transparent", color: confirmDel ? C.red : C.muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
+                {confirmDel ? "Sure?" : "🗑"}
+              </button>
+            </div>
+          )}
+          {p.result && !mini && (
+            <div style={{ display: "flex", gap: 7 }}>
+              <button onClick={() => onUnresolve(p.id)} style={{ flex: 1, padding: "7px", border: `1px solid ${C.border}`, borderRadius: 8, background: "transparent", color: C.muted, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>↩ Undo result</button>
+              <button onClick={() => confirmDel ? onDelete(p.id) : setConfirmDel(true)} style={{ padding: "7px 11px", border: `1px solid ${confirmDel ? C.red : C.border}`, borderRadius: 8, background: "transparent", color: confirmDel ? C.red : C.muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
+                {confirmDel ? "Sure?" : "🗑"}
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function App() {
+      const [preds, setPreds] = useState(() => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } });
+      const [tab, setTab] = useState("dash");
+      const [form, setForm] = useState(df());
+      const [flt, setFlt] = useState("all");
+      const [formErr, setFormErr] = useState("");
+
+      useEffect(() => { try { localStorage.setItem(KEY, JSON.stringify(preds)); } catch {} }, [preds]);
+
+      const addPred = () => {
+        if (!form.market.trim()) { setFormErr("Enter a market question"); return; }
+        if (!form.amount || +form.amount <= 0) { setFormErr("Enter a valid amount"); return; }
+        const p = { id: Date.now(), ...form, amount: +form.amount, result: null, resolvedAt: null };
+        setPreds(prev => [p, ...prev]);
+        setForm(df()); setFormErr(""); setTab("history");
+      };
+      const resolve = (id, result) => setPreds(prev => prev.map(p => p.id === id ? { ...p, result, resolvedAt: new Date().toISOString() } : p));
+      const unresolve = id => setPreds(prev => prev.map(p => p.id === id ? { ...p, result: null, resolvedAt: null } : p));
+      const del = id => setPreds(prev => prev.filter(p => p.id !== id));
+
+      const resolved = preds.filter(p => p.result);
+      const pending = preds.filter(p => !p.result);
+      const wins = resolved.filter(p => p.result === "WIN");
+      const losses = resolved.filter(p => p.result === "LOSS");
+      const totalRisked = preds.reduce((s, p) => s + p.amount, 0);
+      const pnl = wins.reduce((s, p) => s + p.amount, 0) - losses.reduce((s, p) => s + p.amount, 0);
+      const winRate = resolved.length ? Math.round(wins.length / resolved.length * 100) : null;
+      const pendingRisk = pending.reduce((s, p) => s + p.amount, 0);
+
+      const chartData = (() => {
+        if (!resolved.length) return [];
+        const sorted = [...resolved].sort((a, b) => new Date(a.resolvedAt) - new Date(b.resolvedAt));
+        let cum = 0;
+        const pts = [{ lbl: "Start", pnl: 0 }];
+        sorted.forEach(p => { cum += p.result === "WIN" ? p.amount : -p.amount; pts.push({ lbl: fmtDate(p.date), pnl: cum }); });
+        return pts;
+      })();
+
+      const displayPreds = flt === "pending" ? pending : flt === "resolved" ? resolved : preds;
+      const mood = winRate === null ? "🤔" : winRate >= 65 ? "🔥" : winRate >= 50 ? "😎" : winRate >= 35 ? "😬" : "💀";
+
+      const card = { background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: "14px 16px", marginBottom: 10 };
+      const lbl = { fontSize: 10, color: C.muted, fontWeight: 700, letterSpacing: 0.8, textTransform: "uppercase", marginBottom: 5, display: "block" };
+      const inp = { width: "100%", background: C.card2, border: `1px solid ${C.border}`, borderRadius: 8, padding: "11px 12px", color: C.text, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "inherit" };
+
+      return (
+        <div style={{ background: C.bg, minHeight: "100vh", color: C.text, fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: 72 }}>
+          {/* Header */}
+          <div style={{ padding: "16px 16px 14px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, background: C.bg, zIndex: 50 }}>
+            <div>
+              <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: -0.5 }}>🎯 PredTracker</div>
+              <div style={{ fontSize: 11, color: C.muted, marginTop: 1 }}>{preds.length} bets · {pending.length} pending</div>
+            </div>
+            <div style={{ fontSize: 28 }}>{mood}</div>
+          </div>
+
+          <div style={{ padding: "16px 16px 0" }}>
+            {/* DASHBOARD */}
+            {tab === "dash" && (
+              <div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+                  {[
+                    { label: "Total Risked", val: fmtUSD(totalRisked), color: C.text, sub: `${preds.length} bets` },
+                    { label: "P&L", val: resolved.length ? `${pnl >= 0 ? "+" : "-"}${fmtUSD(pnl)}` : "—", color: pnl > 0 ? C.green : pnl < 0 ? C.red : C.text, sub: resolved.length ? `${wins.length}W · ${losses.length}L resolved` : "No results yet" },
+                    { label: "Win Rate", val: winRate !== null ? `${winRate}%` : "—", color: winRate === null ? C.text : winRate >= 60 ? C.green : winRate >= 40 ? C.yellow : C.red, sub: resolved.length ? `${wins.length} wins of ${resolved.length}` : "Make some bets" },
+                    { label: "Pending", val: String(pending.length), color: pending.length > 0 ? C.yellow : C.muted, sub: pending.length ? `${fmtUSD(pendingRisk)} at risk` : "All resolved" },
+                  ].map(({ label, val, color, sub }) => (
+                    <div key={label} style={card}>
+                      <span style={lbl}>{label}</span>
+                      <div style={{ fontSize: 22, fontWeight: 800, color, lineHeight: 1.2 }}>{val}</div>
+                      <div style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>{sub}</div>
+                    </div>
+                  ))}
+                </div>
+                {chartData.length > 1 ? (
+                  <div style={card}>
+                    <span style={lbl}>Cumulative P&L</span>
+                    <div style={{ height: 150, marginTop: 8 }}>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={chartData} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
+                          <XAxis dataKey="lbl" tick={{ fill: C.muted, fontSize: 9 }} axisLine={false} tickLine={false} interval="preserveStartEnd" />
+                          <YAxis tick={{ fill: C.muted, fontSize: 9 }} axisLine={false} tickLine={false}
+                            tickFormatter={v => { const a = Math.abs(v); return `${v < 0 ? "-" : ""}$${a >= 1000 ? (a / 1000).toFixed(1) + "k" : a}`; }} width={44} />
+                          <Tooltip contentStyle={{ background: C.card2, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 12, color: C.text }}
+                            formatter={v => [`${v >= 0 ? "+" : "-"}${fmtUSD(v)}`, "P&L"]} labelStyle={{ color: C.muted }} />
+                          <ReferenceLine y={0} stroke={C.border} strokeDasharray="4 4" />
+                          <Line type="monotone" dataKey="pnl" stroke={pnl >= 0 ? C.green : C.red} strokeWidth={2.5}
+                            dot={{ r: 3, fill: pnl >= 0 ? C.green : C.red, stroke: "none" }} activeDot={{ r: 5, fill: pnl >= 0 ? C.green : C.red }} />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ ...card, textAlign: "center", padding: "28px 20px" }}>
+                    <div style={{ fontSize: 36, marginBottom: 8 }}>📈</div>
+                    <div style={{ color: C.muted, fontSize: 13 }}>P&L chart appears after first resolved bet</div>
+                    <div style={{ color: "#444", fontSize: 11, marginTop: 4 }}>Mark a bet WIN or LOSS to see your curve</div>
+                  </div>
+                )}
+                {preds.length > 0 ? (
+                  <>
+                    <div style={{ ...lbl, marginTop: 4, marginBottom: 8 }}>Recent</div>
+                    {preds.slice(0, 3).map(p => <PredCard key={p.id} p={p} onResolve={resolve} onUnresolve={unresolve} onDelete={del} mini />)}
+                    {preds.length > 3 && (
+                      <button onClick={() => setTab("history")} style={{ width: "100%", background: "none", border: `1px solid ${C.border}`, borderRadius: 9, padding: "10px", color: C.muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
+                        View all {preds.length} predictions →
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <div style={{ ...card, textAlign: "center", padding: "40px 20px", marginTop: 4 }}>
+                    <div style={{ fontSize: 48, marginBottom: 12 }}>🎯</div>
+                    <div style={{ fontWeight: 700, fontSize: 16 }}>No predictions yet</div>
+                    <div style={{ color: C.muted, fontSize: 13, marginTop: 6 }}>Tap ➕ Add to log your first bet</div>
+                    <div style={{ color: "#444", fontSize: 11, marginTop: 4 }}>Track your edge, not just your vibes</div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ADD */}
+            {tab === "add" && (
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 17, marginBottom: 18 }}>New Prediction</div>
+                <div style={{ marginBottom: 14 }}>
+                  <span style={lbl}>Market / Question</span>
+                  <input style={inp} placeholder="e.g. Will BTC hit $100k by Dec 2025?" value={form.market}
+                    onChange={e => { setForm(f => ({ ...f, market: e.target.value })); setFormErr(""); }} />
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
+                  <div>
+                    <span style={lbl}>Platform</span>
+                    <select style={{ ...inp, appearance: "none", WebkitAppearance: "none" }} value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}>
+                      {PLATFORMS.map(p => <option key={p} value={p}>{p}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <span style={lbl}>Date</span>
+                    <input type="date" style={inp} value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
+                  </div>
+                </div>
+                <div style={{ marginBottom: 14 }}>
+                  <span style={lbl}>Your Prediction</span>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    {["YES", "NO"].map(d => (
+                      <button key={d} onClick={() => setForm(f => ({ ...f, direction: d }))}
+                        style={{ flex: 1, padding: "13px 0", border: `2px solid ${form.direction === d ? (d === "YES" ? C.green : C.red) : C.border}`, borderRadius: 9, background: form.direction === d ? (d === "YES" ? "#22c55e18" : "#ef444418") : "transparent", color: form.direction === d ? (d === "YES" ? C.green : C.red) : C.muted, fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
+                        {d === "YES" ? "🟢  YES" : "🔴  NO"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                  <span style={lbl}>Paper Money ($)</span>
+                  <input style={inp} type="number" placeholder="500" value={form.amount}
+                    onChange={e => { setForm(f => ({ ...f, amount: e.target.value })); setFormErr(""); }} />
+                </div>
+                {formErr && <div style={{ color: C.red, fontSize: 12, marginBottom: 12, marginTop: -8 }}>⚠ {formErr}</div>}
+                <button onClick={addPred} style={{ width: "100%", padding: "14px", background: C.purple, border: "none", borderRadius: 10, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+                  🎯 Add Prediction
+                </button>
+              </div>
+            )}
+
+            {/* HISTORY */}
+            {tab === "history" && (
+              <div>
+                <div style={{ display: "flex", gap: 6, marginBottom: 14, overflowX: "auto", paddingBottom: 2 }}>
+                  {[
+                    { key: "all", label: `All (${preds.length})` },
+                    { key: "pending", label: `⏳ Pending (${pending.length})` },
+                    { key: "resolved", label: `✅ Resolved (${resolved.length})` },
+                  ].map(f => (
+                    <button key={f.key} onClick={() => setFlt(f.key)}
+                      style={{ padding: "6px 13px", borderRadius: 20, whiteSpace: "nowrap", border: `1px solid ${flt === f.key ? C.purple : C.border}`, background: flt === f.key ? "#a855f720" : "transparent", color: flt === f.key ? C.purple : C.muted, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+                {displayPreds.length === 0 ? (
+                  <div style={{ ...card, textAlign: "center", padding: "36px 20px" }}>
+                    <div style={{ fontSize: 36, marginBottom: 8 }}>🔍</div>
+                    <div style={{ color: C.muted, fontSize: 13 }}>Nothing here yet</div>
+                  </div>
+                ) : (
+                  displayPreds.map(p => <PredCard key={p.id} p={p} onResolve={resolve} onUnresolve={unresolve} onDelete={del} />)
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Nav */}
+          <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: C.card, borderTop: `1px solid ${C.border}`, display: "flex", zIndex: 100 }}>
+            {[
+              { id: "dash", icon: "📊", label: "Dashboard" },
+              { id: "add", icon: "➕", label: "Add" },
+              { id: "history", icon: "📋", label: "History" },
+            ].map(n => (
+              <button key={n.id} onClick={() => setTab(n.id)}
+                style={{ flex: 1, padding: "10px 8px 13px", border: "none", background: "none", color: tab === n.id ? C.purple : C.muted, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 2, fontSize: 10, fontWeight: tab === n.id ? 700 : 500, fontFamily: "inherit", borderTop: `2px solid ${tab === n.id ? C.purple : "transparent"}` }}>
+                <span style={{ fontSize: 20 }}>{n.icon}</span>
+                <span>{n.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
