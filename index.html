@@ -18,7 +18,7 @@
     html, body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Courier New', Courier, monospace;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Courier New', monospace;
       min-height: 100vh;
     }
 
@@ -26,37 +26,38 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.25rem 2rem;
+      padding: 2.5rem 4rem;
       border-bottom: 0.5px solid var(--border);
     }
 
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 16px;
     }
 
     .nav-name {
-      font-size: 13px;
+      font-size: 15px;
       color: #f0f0f0;
       letter-spacing: 0.02em;
+      font-weight: 500;
     }
 
     .nav-right {
-      font-size: 10px;
-      color: #333;
+      font-size: 12px;
+      color: #555;
       letter-spacing: 0.06em;
     }
 
     .hero {
-      padding: 2rem 2rem 0.75rem;
+      padding: 3.5rem 4rem 1.5rem;
     }
 
     .hero h1 {
-      font-size: clamp(22px, 4vw, 30px);
-      font-weight: 500;
+      font-size: clamp(42px, 6vw, 52px);
+      font-weight: 600;
       color: #f0f0f0;
-      line-height: 1.2;
+      line-height: 1.15;
       letter-spacing: -0.02em;
     }
 
@@ -65,16 +66,17 @@
     }
 
     .hero p {
-      font-size: 11px;
-      color: #444;
-      margin-top: 6px;
+      font-size: 13px;
+      color: #666;
+      margin-top: 12px;
       letter-spacing: 0.04em;
     }
 
     .graph-wrap {
       position: relative;
       width: 100%;
-      height: 420px;
+      height: 600px;
+      margin: 0 auto;
     }
 
     #graph {
@@ -88,10 +90,10 @@
       pointer-events: none;
       background: #111;
       border: 0.5px solid #252525;
-      border-radius: 7px;
-      padding: 8px 12px;
+      border-radius: 8px;
+      padding: 12px 16px;
       display: none;
-      min-width: 150px;
+      min-width: 180px;
     }
 
     .tooltip.is-live {
@@ -99,44 +101,44 @@
     }
 
     .tooltip .t-name {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 600;
       color: #f0f0f0;
     }
 
     .tooltip .t-metric {
-      font-size: 10px;
-      color: #555;
-      margin-top: 2px;
+      font-size: 12px;
+      color: #777;
+      margin-top: 4px;
     }
 
     .tooltip .t-status {
-      font-size: 10px;
-      margin-top: 6px;
-      padding-top: 6px;
+      font-size: 12px;
+      margin-top: 8px;
+      padding-top: 8px;
       border-top: 0.5px solid #1a1a1a;
     }
 
     .about {
-      padding: 1.25rem 2rem;
+      padding: 3rem 4rem;
       border-top: 0.5px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 2rem;
+      gap: 3rem;
     }
 
     .about p {
-      font-size: 10px;
-      color: #333;
-      line-height: 1.9;
-      max-width: 500px;
+      font-size: 13px;
+      color: #777;
+      line-height: 1.85;
+      max-width: 600px;
     }
 
     .about a {
-      color: #444;
+      color: #888;
       text-decoration: none;
-      border-bottom: 0.5px solid #2a2a2a;
+      border-bottom: 0.5px solid #3a3a3a;
       padding-bottom: 1px;
       transition: color 0.15s, border-color 0.15s;
     }
@@ -147,8 +149,8 @@
     }
 
     .about-right {
-      font-size: 10px;
-      color: #2a2a2a;
+      font-size: 12px;
+      color: #555;
       white-space: nowrap;
       flex-shrink: 0;
     }
@@ -265,7 +267,7 @@
         const isH = hov && hov.id === n.id;
         const isHub = n.type === 'hub';
         const isLive = n.live === true;
-        const R = isHub ? 20 : 16;
+        const R = isHub ? 32 : 26;
 
         if (isLive) {
           const gr = R + 8 + Math.sin(pulse) * 5;
@@ -287,23 +289,23 @@
         ctx.stroke();
 
         if (isHub) {
-          ctx.font = '500 9px Courier New';
-          ctx.fillStyle = '#444';
+          ctx.font = '600 12px "SF Mono", Monaco, monospace';
+          ctx.fillStyle = '#666';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText('kpi', n.px, n.py);
         } else {
           const img = imgCache[n.logo];
           if (img && img.complete) {
-            ctx.globalAlpha = isLive ? 1 : isH ? 0.5 : 0.18;
-            ctx.drawImage(img, n.px - 10, n.py - 10, 20, 20);
+            ctx.globalAlpha = isLive ? 1 : isH ? 0.6 : 0.2;
+            ctx.drawImage(img, n.px - 16, n.py - 16, 32, 32);
             ctx.globalAlpha = 1;
           }
-          ctx.font = `${isLive ? '600' : '400'} 10px Courier New`;
-          ctx.fillStyle = isLive ? (isH ? ACCENT : '#c0c0c0') : isH ? '#444' : '#242424';
+          ctx.font = `${isLive ? '700' : '500'} 13px "SF Mono", Monaco, monospace`;
+          ctx.fillStyle = isLive ? (isH ? ACCENT : '#d0d0d0') : isH ? '#666' : '#3a3a3a';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
-          ctx.fillText(n.label, n.px, n.py + R + 6);
+          ctx.fillText(n.label, n.px, n.py + R + 10);
         }
       });
 
@@ -314,7 +316,7 @@
       return nodes.find(n => {
         if (n.type === 'hub') return false;
         const dx = n.px - mx, dy = n.py - my;
-        return Math.sqrt(dx * dx + dy * dy) < 24;
+        return Math.sqrt(dx * dx + dy * dy) < 38;
       }) || null;
     }
 
