@@ -72,51 +72,93 @@
       letter-spacing: 0.04em;
     }
 
-    .graph-wrap {
-      position: relative;
-      width: 100%;
-      height: 600px;
-      margin: 0 auto;
+    .grid-section {
+      padding: 2rem 4rem;
     }
 
-    #graph {
-      display: block;
-      width: 100%;
-      height: 100%;
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 100%;
     }
 
-    .tooltip {
-      position: absolute;
-      pointer-events: none;
+    .company-card {
       background: #111;
-      border: 0.5px solid #252525;
-      border-radius: 8px;
-      padding: 12px 16px;
-      display: none;
-      min-width: 180px;
+      border: 0.5px solid #1a1a1a;
+      border-radius: 10px;
+      padding: 1.75rem;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 180px;
     }
 
-    .tooltip.is-live {
+    .company-card:hover {
+      border-color: #333;
+      background: #161616;
+    }
+
+    .company-card.live {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .company-card.live:hover {
       border-color: var(--accent);
+      background: rgba(232, 255, 0, 0.02);
     }
 
-    .tooltip .t-name {
-      font-size: 14px;
+    .card-header {
+      display: flex;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .company-logo {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 6px;
+    }
+
+    .card-info {
+      flex: 1;
+    }
+
+    .company-name {
+      font-size: 18px;
       font-weight: 600;
       color: #f0f0f0;
+      margin-bottom: 4px;
     }
 
-    .tooltip .t-metric {
+    .metric {
       font-size: 12px;
       color: #777;
-      margin-top: 4px;
+      letter-spacing: 0.03em;
     }
 
-    .tooltip .t-status {
-      font-size: 12px;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 0.5px solid #1a1a1a;
+    .card-status {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .status-badge {
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: #1a1a1a;
+      color: #888;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .status-badge.live {
+      background: rgba(232, 255, 0, 0.1);
+      color: var(--accent);
     }
 
     .about {
@@ -180,12 +222,91 @@
     <p>not financial advice, just the signals.</p>
   </div>
 
-  <div class="graph-wrap">
-    <canvas id="graph"></canvas>
-    <div class="tooltip" id="tooltip">
-      <div class="t-name" id="t-name"></div>
-      <div class="t-metric" id="t-metric"></div>
-      <div class="t-status" id="t-status"></div>
+  <div class="grid-section">
+    <div class="company-grid">
+      <!-- Reddit -->
+      <a href="/reddit" class="company-card live">
+        <div class="card-header">
+          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#FF4500"/><path d="M16.67 10a1.46 1.46 0 00-2.47-1 7.12 7.12 0 00-3.85-1.23l.65-3.06 2.13.45a1 1 0 101.02-.97 1 1 0 00-.96.68l-2.38-.5a.17.17 0 00-.2.13l-.73 3.41a7.14 7.14 0 00-3.89 1.23 1.46 1.46 0 10-1.6 2.39 2.87 2.87 0 000 .37c0 1.88 2.19 3.41 4.89 3.41s4.89-1.53 4.89-3.41a2.87 2.87 0 000-.37 1.46 1.46 0 00.4-1.53zm-9.3 1.1a1 1 0 111 1 1 1 0 01-1-1zm5.58 2.65a3.54 3.54 0 01-2.95.66 3.54 3.54 0 01-2.95-.66.17.17 0 01.24-.24 3.22 3.22 0 002.71.56 3.22 3.22 0 002.71-.56.17.17 0 01.24.24zm-.19-1.65a1 1 0 111-1 1 1 0 01-1 1z" fill="white"/></svg>
+          <div class="card-info">
+            <div class="company-name">reddit</div>
+            <div class="metric">dau · q2 2026</div>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge live">● live · explore</span>
+        </div>
+      </a>
+
+      <!-- Uber -->
+      <div class="company-card">
+        <div class="card-header">
+          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="4" fill="#000"/><text x="10" y="14.5" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="white">U</text></svg>
+          <div class="card-info">
+            <div class="company-name">uber</div>
+            <div class="metric">trips · q3</div>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming q3</span>
+        </div>
+      </div>
+
+      <!-- Netflix -->
+      <div class="company-card">
+        <div class="card-header">
+          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="4" fill="#E50914"/><text x="10" y="14.5" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="13" fill="white">N</text></svg>
+          <div class="card-info">
+            <div class="company-name">netflix</div>
+            <div class="metric">subscribers · q3</div>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming q3</span>
+        </div>
+      </div>
+
+      <!-- Meta -->
+      <div class="company-card">
+        <div class="card-header">
+          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="10" fill="#0866FF"/><text x="10" y="14" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="7" fill="white">META</text></svg>
+          <div class="card-info">
+            <div class="company-name">meta</div>
+            <div class="metric">dau · q3</div>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming q3</span>
+        </div>
+      </div>
+
+      <!-- Spotify -->
+      <div class="company-card">
+        <div class="card-header">
+          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#1DB954"/><path d="M14 13.1c-.2 0-.3-.1-.5-.2-1.4-.8-3.1-1.3-5-1.3-.6 0-1.2.1-1.8.2-.2 0-.4-.2-.4-.4s.2-.4.4-.4c.6-.1 1.3-.2 2-.2 2.1 0 4 .5 5.6 1.5.2.1.3.4.1.6-.1.1-.2.1-.3.1zm.8-1.9c-.2 0-.4-.1-.5-.2-1.6-1-4-1.5-5.8-1.5-.7 0-1.3.1-1.8.2-.3.1-.5-.1-.6-.4-.1-.2.1-.5.4-.6.6-.2 1.3-.2 2-.2 2.1 0 4.6.5 6.4 1.7.2.1.3.4.2.7-.1.2-.2.3-.3.3zm.9-2c-.2 0-.3 0-.4-.1-1.8-1.1-4.5-1.6-6.8-1.6-.8 0-1.5.1-2.2.2-.3.1-.6-.1-.7-.4-.1-.3.1-.6.4-.7.8-.2 1.6-.2 2.5-.2 2.5 0 5.4.6 7.5 1.8.3.2.4.5.2.8-.1.1-.3.2-.5.2z" fill="white"/></svg>
+          <div class="card-info">
+            <div class="company-name">spotify</div>
+            <div class="metric">mau · q3</div>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming q3</span>
+        </div>
+      </div>
+
+      <!-- DoorDash -->
+      <div class="company-card">
+        <div class="card-header">
+          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="4" fill="#FF3008"/><text x="10" y="14" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="9" fill="white">DD</text></svg>
+          <div class="card-info">
+            <div class="company-name">doordash</div>
+            <div class="metric">deliveries · q3</div>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming q3</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -195,168 +316,7 @@
   </div>
 
   <script>
-    const canvas = document.getElementById('graph');
-    const ctx = canvas.getContext('2d');
-    const tooltip = document.getElementById('tooltip');
-    const ACCENT = '#E8FF00';
-    let W, H, nodes, hov = null, pulse = 0;
-
-    const svgLogos = {
-      reddit: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#FF4500"/><path d="M16.67 10a1.46 1.46 0 00-2.47-1 7.12 7.12 0 00-3.85-1.23l.65-3.06 2.13.45a1 1 0 101.02-.97 1 1 0 00-.96.68l-2.38-.5a.17.17 0 00-.2.13l-.73 3.41a7.14 7.14 0 00-3.89 1.23 1.46 1.46 0 10-1.6 2.39 2.87 2.87 0 000 .37c0 1.88 2.19 3.41 4.89 3.41s4.89-1.53 4.89-3.41a2.87 2.87 0 000-.37 1.46 1.46 0 00.4-1.53zm-9.3 1.1a1 1 0 111 1 1 1 0 01-1-1zm5.58 2.65a3.54 3.54 0 01-2.95.66 3.54 3.54 0 01-2.95-.66.17.17 0 01.24-.24 3.22 3.22 0 002.71.56 3.22 3.22 0 002.71-.56.17.17 0 01.24.24zm-.19-1.65a1 1 0 111-1 1 1 0 01-1 1z" fill="white"/></svg>`,
-      uber: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="4" fill="#000"/><text x="10" y="14.5" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="white">U</text></svg>`,
-      netflix: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="4" fill="#E50914"/><text x="10" y="14.5" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="13" fill="white">N</text></svg>`,
-      meta: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="10" fill="#0866FF"/><text x="10" y="14" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="7" fill="white">META</text></svg>`,
-      spotify: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#1DB954"/><path d="M14 13.1c-.2 0-.3-.1-.5-.2-1.4-.8-3.1-1.3-5-1.3-.6 0-1.2.1-1.8.2-.2 0-.4-.2-.4-.4s.2-.4.4-.4c.6-.1 1.3-.2 2-.2 2.1 0 4 .5 5.6 1.5.2.1.3.4.1.6-.1.1-.2.1-.3.1zm.8-1.9c-.2 0-.4-.1-.5-.2-1.6-1-4-1.5-5.8-1.5-.7 0-1.3.1-1.8.2-.3.1-.5-.1-.6-.4-.1-.2.1-.5.4-.6.6-.2 1.3-.2 2-.2 2.1 0 4.6.5 6.4 1.7.2.1.3.4.2.7-.1.2-.2.3-.3.3zm.9-2c-.2 0-.3 0-.4-.1-1.8-1.1-4.5-1.6-6.8-1.6-.8 0-1.5.1-2.2.2-.3.1-.6-.1-.7-.4-.1-.3.1-.6.4-.7.8-.2 1.6-.2 2.5-.2 2.5 0 5.4.6 7.5 1.8.3.2.4.5.2.8-.1.1-.3.2-.5.2z" fill="white"/></svg>`,
-      doordash: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="4" fill="#FF3008"/><text x="10" y="14" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="9" fill="white">DD</text></svg>`,
-    };
-
-    const raw = [
-      { id: 'hub', type: 'hub', x: 0.5, y: 0.5 },
-      { id: 'reddit',   label: 'reddit',   live: true,  x: 0.2,  y: 0.2,  metric: 'dau · q2 2026',       logo: 'reddit',   href: '/reddit' },
-      { id: 'uber',     label: 'uber',     live: false, x: 0.78, y: 0.2,  metric: 'trips · q3',           logo: 'uber' },
-      { id: 'netflix',  label: 'netflix',  live: false, x: 0.9,  y: 0.55, metric: 'subscribers · q3',     logo: 'netflix' },
-      { id: 'meta',     label: 'meta',     live: false, x: 0.65, y: 0.84, metric: 'dau · q3',             logo: 'meta' },
-      { id: 'spotify',  label: 'spotify',  live: false, x: 0.35, y: 0.84, metric: 'mau · q3',             logo: 'spotify' },
-      { id: 'doordash', label: 'doordash', live: false, x: 0.1,  y: 0.55, metric: 'deliveries · q3',      logo: 'doordash' },
-    ];
-
-    const edges = [
-      ['hub','reddit'],['hub','uber'],['hub','netflix'],['hub','meta'],['hub','spotify'],['hub','doordash'],
-      ['reddit','uber'],['uber','netflix'],['netflix','meta'],['meta','spotify'],['spotify','doordash'],['doordash','reddit'],
-    ];
-
-    const imgCache = {};
-    function loadImg(id) {
-      if (imgCache[id]) return imgCache[id];
-      const img = new Image();
-      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgLogos[id]);
-      imgCache[id] = img;
-      return img;
-    }
-
-    function resize() {
-      const rect = canvas.parentElement.getBoundingClientRect();
-      W = rect.width; H = 420;
-      canvas.width = W * devicePixelRatio;
-      canvas.height = H * devicePixelRatio;
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.scale(devicePixelRatio, devicePixelRatio);
-      nodes = raw.map(n => ({ ...n, px: n.x * W, py: n.y * H }));
-      Object.keys(svgLogos).forEach(loadImg);
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      pulse = (pulse + 0.025) % (Math.PI * 2);
-
-      edges.forEach(([a, b]) => {
-        const na = nodes.find(n => n.id === a);
-        const nb = nodes.find(n => n.id === b);
-        if (!na || !nb) return;
-        const isH = hov && (hov.id === a || hov.id === b);
-        ctx.beginPath();
-        ctx.moveTo(na.px, na.py);
-        ctx.lineTo(nb.px, nb.py);
-        ctx.strokeStyle = isH ? '#2a2a2a' : '#161616';
-        ctx.lineWidth = isH ? 1 : 0.5;
-        ctx.stroke();
-      });
-
-      nodes.forEach(n => {
-        const isH = hov && hov.id === n.id;
-        const isHub = n.type === 'hub';
-        const isLive = n.live === true;
-        const R = isHub ? 32 : 26;
-
-        if (isLive) {
-          const gr = R + 8 + Math.sin(pulse) * 5;
-          ctx.beginPath();
-          ctx.arc(n.px, n.py, gr, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(232,255,0,0.05)';
-          ctx.fill();
-        }
-
-        ctx.beginPath();
-        ctx.arc(n.px, n.py, R, 0, Math.PI * 2);
-        ctx.fillStyle = '#0e0e0e';
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(n.px, n.py, R, 0, Math.PI * 2);
-        ctx.strokeStyle = isHub ? '#252525' : isLive ? (isH ? ACCENT : ACCENT + 'cc') : isH ? '#333' : '#1c1c1c';
-        ctx.lineWidth = isLive ? 1.5 : 0.5;
-        ctx.stroke();
-
-        if (isHub) {
-          ctx.font = '600 12px "SF Mono", Monaco, monospace';
-          ctx.fillStyle = '#666';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('kpi', n.px, n.py);
-        } else {
-          const img = imgCache[n.logo];
-          if (img && img.complete) {
-            ctx.globalAlpha = isLive ? 1 : isH ? 0.6 : 0.2;
-            ctx.drawImage(img, n.px - 16, n.py - 16, 32, 32);
-            ctx.globalAlpha = 1;
-          }
-          ctx.font = `${isLive ? '700' : '500'} 13px "SF Mono", Monaco, monospace`;
-          ctx.fillStyle = isLive ? (isH ? ACCENT : '#d0d0d0') : isH ? '#666' : '#3a3a3a';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'top';
-          ctx.fillText(n.label, n.px, n.py + R + 10);
-        }
-      });
-
-      requestAnimationFrame(draw);
-    }
-
-    function getHov(mx, my) {
-      return nodes.find(n => {
-        if (n.type === 'hub') return false;
-        const dx = n.px - mx, dy = n.py - my;
-        return Math.sqrt(dx * dx + dy * dy) < 38;
-      }) || null;
-    }
-
-    canvas.addEventListener('mousemove', e => {
-      const r = canvas.getBoundingClientRect();
-      const mx = e.clientX - r.left, my = e.clientY - r.top;
-      hov = getHov(mx, my);
-      canvas.style.cursor = (hov && hov.live) ? 'pointer' : hov ? 'default' : 'default';
-
-      if (hov) {
-        document.getElementById('t-name').textContent = hov.label;
-        document.getElementById('t-metric').textContent = hov.metric || '';
-        const st = document.getElementById('t-status');
-        if (hov.live) {
-          st.innerHTML = `<span style="color:#E8FF00;">● live · click to explore</span>`;
-          tooltip.className = 'tooltip is-live';
-        } else {
-          st.innerHTML = `<span style="color:#2a2a2a;">coming q3 2026</span>`;
-          tooltip.className = 'tooltip';
-        }
-        tooltip.style.display = 'block';
-        const tx = mx + 16 > W - 170 ? mx - 170 : mx + 16;
-        tooltip.style.left = tx + 'px';
-        tooltip.style.top = (my - 10) + 'px';
-      } else {
-        tooltip.style.display = 'none';
-      }
-    });
-
-    canvas.addEventListener('mouseleave', () => { hov = null; tooltip.style.display = 'none'; });
-
-    canvas.addEventListener('click', e => {
-      const r = canvas.getBoundingClientRect();
-      const n = getHov(e.clientX - r.left, e.clientY - r.top);
-      if (n && n.live && n.href) window.location.href = n.href;
-    });
-
-    window.addEventListener('resize', () => { resize(); });
-    resize();
-    draw();
+    // Grid layout - no additional JavaScript needed
   </script>
 </body>
 </html>
