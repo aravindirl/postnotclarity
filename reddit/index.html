@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>reddit DAU — post not clarity</title>
+  <title>PNC Research</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a' stroke='%23E8FF00' stroke-width='3'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='%23E8FF00' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='%23E8FF00' font-family='Arial'>?</text%3E%3C/svg%3E" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <style>
@@ -37,16 +37,24 @@
       border-bottom: 0.5px solid var(--border);
     }
 
-    .nav-left { display: flex; align-items: center; gap: 16px; }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
     .nav-name { font-size: 15px; color: #f0f0f0; font-weight: 500; display: none; }
 
     .nav-right {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       letter-spacing: 0.05em;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .nav-right:hover {
+      opacity: 0.85;
     }
 
     .nav-logo {
@@ -337,6 +345,161 @@
     .bottom-bar span { font-size: 12px; color: #666; }
     .bottom-bar span b { color: var(--accent); font-weight: 500; }
 
+    /* Mobile Responsive Design */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .nav-label {
+        font-size: 16px;
+      }
+
+      .nav-back {
+        align-self: flex-end;
+      }
+
+      .header {
+        flex-direction: column;
+        padding: 2rem 1.5rem;
+        gap: 1.5rem;
+      }
+
+      .header-left h1 {
+        font-size: clamp(22px, 5vw, 32px);
+      }
+
+      .header-right {
+        text-align: left;
+      }
+
+      .header-right .num {
+        font-size: 24px;
+      }
+
+      .main {
+        padding: 1.5rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .card {
+        padding: 1rem;
+      }
+
+      .card-label {
+        font-size: 10px;
+      }
+
+      .card-body {
+        font-size: 12px;
+      }
+
+      .chart-wrap {
+        height: 180px;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      .j-input, .j-btn {
+        width: 100%;
+      }
+
+      .bottom-bar {
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+      .back-home-btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        padding: 1.25rem;
+      }
+
+      .nav-logo {
+        width: 36px;
+        height: 36px;
+      }
+
+      .nav-label {
+        font-size: 14px;
+      }
+
+      .header {
+        padding: 1.5rem 1rem;
+      }
+
+      .header-left h1 {
+        font-size: clamp(18px, 5vw, 26px);
+      }
+
+      .header-left .label, .header-right .label {
+        font-size: 10px;
+      }
+
+      .header-right .num {
+        font-size: 20px;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .grid {
+        gap: 0.75rem;
+      }
+
+      .card {
+        padding: 0.75rem;
+        min-height: auto;
+      }
+
+      .card-label {
+        font-size: 9px;
+      }
+
+      .card-body {
+        font-size: 11px;
+      }
+
+      .pill {
+        font-size: 9px;
+        padding: 2px 6px;
+      }
+
+      .input-row {
+        gap: 0.5rem;
+      }
+
+      .j-input, .j-btn {
+        font-size: 12px;
+        padding: 0.5rem;
+      }
+
+      .note-row {
+        padding: 0.75rem 0;
+      }
+
+      .note-text {
+        font-size: 12px;
+      }
+    }
+
     .back-home-btn {
       display: inline-block;
       margin-bottom: 2rem;
@@ -365,15 +528,17 @@
 
   <!-- NAV -->
   <nav class="nav">
-    <a href="/" class="nav-back">← back</a>
-    <a href="/" class="nav-right" style="text-decoration: none; color: inherit;">
-      <svg class="nav-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100" height="100" fill="#0a0a0a" stroke="#E8FF00" stroke-width="3"/>
-        <path d="M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50" stroke="#E8FF00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <text x="80" y="62" font-size="24" font-weight="bold" fill="#E8FF00" font-family="Arial">?</text>
-      </svg>
-      <span class="nav-label">pnc</span>
-    </a>
+    <div class="nav-left">
+      <a href="/" class="nav-right">
+        <svg class="nav-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" fill="#0a0a0a" stroke="#E8FF00" stroke-width="3"/>
+          <path d="M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50" stroke="#E8FF00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="80" y="62" font-size="24" font-weight="bold" fill="#E8FF00" font-family="Arial">?</text>
+        </svg>
+        <span class="nav-label">PNC</span>
+      </a>
+    </div>
+    <a href="/" class="nav-back">← back to home</a>
   </nav>
 
   <!-- HEADER -->
