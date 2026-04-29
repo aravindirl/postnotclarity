@@ -18,7 +18,7 @@
     html, body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-family: 'IBM Plex Mono', 'Roboto Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', 'Menlo', monospace;
       min-height: 100vh;
     }
 
@@ -28,6 +28,8 @@
       align-items: center;
       padding: 2.5rem 4rem;
       border-bottom: 0.5px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .nav-left {
@@ -45,7 +47,7 @@
 
     .nav-right {
       font-size: 12px;
-      color: #555;
+      color: #999;
       letter-spacing: 0.06em;
     }
 
@@ -54,7 +56,7 @@
     }
 
     .hero h1 {
-      font-size: clamp(42px, 6vw, 52px);
+      font-size: clamp(32px, 6vw, 52px);
       font-weight: 600;
       color: #f0f0f0;
       line-height: 1.15;
@@ -67,7 +69,7 @@
 
     .hero p {
       font-size: 13px;
-      color: #666;
+      color: #aaa;
       margin-top: 12px;
       letter-spacing: 0.04em;
     }
@@ -78,7 +80,7 @@
 
     .company-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
       max-width: 100%;
     }
@@ -137,7 +139,7 @@
 
     .metric {
       font-size: 12px;
-      color: #777;
+      color: #aaa;
       letter-spacing: 0.03em;
     }
 
@@ -151,7 +153,7 @@
       padding: 5px 10px;
       border-radius: 5px;
       background: #1a1a1a;
-      color: #888;
+      color: #aaa;
       font-weight: 500;
       letter-spacing: 0.02em;
     }
@@ -168,17 +170,18 @@
       justify-content: space-between;
       align-items: center;
       gap: 3rem;
+      flex-wrap: wrap;
     }
 
     .about p {
       font-size: 13px;
-      color: #777;
+      color: #aaa;
       line-height: 1.85;
       max-width: 600px;
     }
 
     .about a {
-      color: #888;
+      color: #bbb;
       text-decoration: none;
       border-bottom: 0.5px solid #3a3a3a;
       padding-bottom: 1px;
@@ -192,13 +195,155 @@
 
     .about-right {
       font-size: 12px;
-      color: #555;
+      color: #999;
       white-space: nowrap;
       flex-shrink: 0;
     }
 
     .about-right span {
       color: var(--accent);
+    }
+
+    /* Mobile Responsive Design */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1.5rem 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-left {
+        gap: 12px;
+      }
+
+      .nav-name {
+        font-size: 14px;
+      }
+
+      .nav svg {
+        width: 28px;
+        height: 16px;
+      }
+
+      .hero {
+        padding: 2.5rem 1.5rem 1.25rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(28px, 5vw, 42px);
+      }
+
+      .hero p {
+        font-size: 12px;
+      }
+
+      .grid-section {
+        padding: 1.5rem 1.5rem;
+      }
+
+      .company-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+      }
+
+      .company-card {
+        padding: 1.25rem;
+        min-height: 160px;
+      }
+
+      .company-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .company-name {
+        font-size: 16px;
+      }
+
+      .card-header {
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .about {
+        padding: 2rem 1.5rem;
+        gap: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .about p {
+        font-size: 12px;
+      }
+
+      .about-right {
+        width: 100%;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        padding: 1.25rem 1rem;
+      }
+
+      .nav-name {
+        font-size: 13px;
+      }
+
+      .nav svg {
+        width: 24px;
+        height: 14px;
+      }
+
+      .hero {
+        padding: 2rem 1rem 1rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(24px, 5vw, 36px);
+      }
+
+      .grid-section {
+        padding: 1rem;
+      }
+
+      .company-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .company-card {
+        padding: 1rem;
+        min-height: 140px;
+      }
+
+      .company-logo {
+        width: 36px;
+        height: 36px;
+      }
+
+      .company-name {
+        font-size: 15px;
+      }
+
+      .metric {
+        font-size: 11px;
+      }
+
+      .status-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
+      .about {
+        padding: 1.5rem 1rem;
+      }
+
+      .about p {
+        font-size: 11px;
+        line-height: 1.7;
+      }
     }
   </style>
 </head>
