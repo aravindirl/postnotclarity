@@ -284,9 +284,9 @@
 
     .kpi-row {
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: 1fr auto;
       align-items: center;
-      gap: 1rem;
+      gap: 1.5rem;
       font-size: 12px;
       padding: 0.5rem 0;
       border-bottom: 0.5px solid var(--border);
@@ -302,24 +302,18 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       white-space: nowrap;
-      min-width: 90px;
     }
 
     .kpi-value {
       font-size: 15px;
       font-weight: 700;
       color: var(--accent);
-      text-align: left;
+      text-align: right;
       white-space: nowrap;
     }
 
     .kpi-meta {
-      color: #666;
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      text-align: right;
-      text-transform: uppercase;
-      white-space: nowrap;
+      display: none;
     }
     }
 
@@ -660,13 +654,12 @@
         <div class="kpi-type">Daily Active Users</div>
         <div class="kpi-details">
           <div class="kpi-row">
-            <span class="kpi-metric">DAU</span>
-            <span class="kpi-value">108.1M</span>
-            <span class="kpi-meta">Q2 2026</span>
+            <span class="kpi-metric">DAU (Q2 2026)</span>
+            <span class="kpi-value">—</span>
           </div>
           <div class="kpi-row">
             <span class="kpi-metric">Last Updated</span>
-            <span class="kpi-value">05-10-2026</span>
+            <span class="kpi-value">—</span>
           </div>
         </div>
         <div class="card-status">
