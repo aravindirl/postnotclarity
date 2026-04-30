@@ -184,6 +184,28 @@
       width: 40px;
       height: 40px;
       flex-shrink: 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(232, 255, 0, 0.15), 0 0 0 1px rgba(232, 255, 0, 0.2);
+      padding: 4px;
+      transition: all 0.15s;
+    }
+
+    body.light-mode .nav-logo {
+      box-shadow: 0 2px 8px rgba(229, 57, 53, 0.15), 0 0 0 1px rgba(229, 57, 53, 0.2);
+    }
+
+    .nav-right:hover .nav-logo {
+      box-shadow: 0 4px 12px rgba(232, 255, 0, 0.25), 0 0 0 1px rgba(232, 255, 0, 0.3);
+    }
+
+    body.light-mode .nav-right:hover .nav-logo {
+      box-shadow: 0 4px 12px rgba(229, 57, 53, 0.25), 0 0 0 1px rgba(229, 57, 53, 0.3);
+    }
+
+    body.light-mode .nav-logo path,
+    body.light-mode .nav-logo text {
+      stroke: #E53935;
+      fill: #E53935;
     }
 
     .nav-label {
