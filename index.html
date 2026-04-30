@@ -167,13 +167,36 @@
       background: rgba(232, 255, 0, 0.04);
     }
 
+    .logo-container {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 0.75rem;
+    }
+
     .company-logo {
       width: 48px;
       height: 48px;
       object-fit: contain;
-      margin-bottom: 0.75rem;
       display: block;
       background: transparent;
+    }
+
+    .company-logo-fallback {
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+
+    .logo-container.logo-failed .company-logo {
+      display: none;
+    }
+
+    .logo-container.logo-failed .company-logo-fallback {
+      display: block;
     }
 
     .company-name {
@@ -497,7 +520,10 @@
     <div class="company-grid">
       <!-- Reddit -->
       <a href="/reddit" class="company-card live">
-        <img class="company-logo" src="https://logo.clearbit.com/reddit.com" alt="reddit">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/reddit.com" alt="reddit" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#FF4500"/><circle cx="32" cy="38" r="6" fill="white"/><circle cx="68" cy="38" r="6" fill="white"/><path d="M38,55 Q50,62 62,55" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+        </div>
         <div class="company-name">reddit</div>
         <div class="kpi-type">Daily Active Users</div>
         <div class="kpi-details">
@@ -519,7 +545,10 @@
 
       <!-- Uber -->
       <div class="company-card">
-        <img class="company-logo" src="https://logo.clearbit.com/uber.com" alt="uber">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/uber.com" alt="uber" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#000" rx="10"/><text x="50" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="40" font-weight="300" fill="white">uber</text></svg>
+        </div>
         <div class="company-name">uber</div>
         <div class="kpi-type">Trips</div>
         <div class="kpi-details">
@@ -541,7 +570,10 @@
 
       <!-- Netflix -->
       <div class="company-card">
-        <img class="company-logo" src="https://logo.clearbit.com/netflix.com" alt="netflix">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/netflix.com" alt="netflix" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#E50914" rx="10"/><g fill="white"><path d="M25,25 L40,25 L40,75 L25,75 Z M40,25 L55,60 L55,25 L70,25 L70,75 L55,75 L55,50 L55,75 L40,75 Z M70,25 L85,25 L85,37 L80,37 L80,75 L70,75 Z"/></g></svg>
+        </div>
         <div class="company-name">netflix</div>
         <div class="kpi-type">Subscribers</div>
         <div class="kpi-details">
@@ -563,7 +595,10 @@
 
       <!-- Meta -->
       <div class="company-card">
-        <img class="company-logo" src="https://logo.clearbit.com/meta.com" alt="meta">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/meta.com" alt="meta" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="metaGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0866FF"/><stop offset="100%" style="stop-color:#0D47A1"/></linearGradient></defs><rect width="100" height="100" fill="url(#metaGrad)" rx="10"/><g fill="white"><path d="M30,35 Q45,20 55,35 L55,70 Q45,80 35,70 Z M65,35 Q80,20 90,35 L90,70 Q80,80 70,70 Z" stroke="white" stroke-width="2" fill="none"/></g></svg>
+        </div>
         <div class="company-name">meta</div>
         <div class="kpi-type">Daily Active Users</div>
         <div class="kpi-details">
@@ -585,7 +620,10 @@
 
       <!-- Spotify -->
       <div class="company-card">
-        <img class="company-logo" src="https://logo.clearbit.com/spotify.com" alt="spotify">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/spotify.com" alt="spotify" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#1DB954"/><g fill="white"><path d="M35,38 Q50,28 65,38" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M32,52 Q50,40 68,52" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M30,66 Q50,52 70,66" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round"/></g></svg>
+        </div>
         <div class="company-name">spotify</div>
         <div class="kpi-type">Monthly Active Users</div>
         <div class="kpi-details">
@@ -607,7 +645,10 @@
 
       <!-- Tinder -->
       <div class="company-card">
-        <img class="company-logo" src="https://logo.clearbit.com/tinder.com" alt="tinder">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/tinder.com" alt="tinder" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#FF6B6B" rx="10"/><path d="M50,20 L60,38 L70,30 L65,50 L80,55 L60,60 L65,80 L50,65 L35,80 L40,60 L20,55 L35,50 L30,30 L40,38 Z" fill="white"/></svg>
+        </div>
         <div class="company-name">tinder</div>
         <div class="kpi-type">Paying Active Users</div>
         <div class="kpi-details">
@@ -629,7 +670,10 @@
 
       <!-- FedEx -->
       <div class="company-card">
-        <img class="company-logo" src="https://logo.clearbit.com/fedex.com" alt="fedex">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/fedex.com" alt="fedex" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#4D148C" rx="10"/><text x="25" y="65" font-family="Arial, sans-serif" font-weight="bold" font-size="32" fill="#4D148C">Fed</text><text x="55" y="65" font-family="Arial, sans-serif" font-weight="bold" font-size="32" fill="#FF6600">Ex</text></svg>
+        </div>
         <div class="company-name">fedex</div>
         <div class="kpi-type">Revenue</div>
         <div class="kpi-details">
@@ -651,7 +695,10 @@
 
       <!-- Airbnb -->
       <div class="company-card">
-        <img class="company-logo" src="https://logo.clearbit.com/airbnb.com" alt="airbnb">
+        <div class="logo-container">
+          <img class="company-logo" src="https://logo.clearbit.com/airbnb.com" alt="airbnb" onerror="this.parentElement.classList.add('logo-failed')">
+          <svg class="company-logo-fallback" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#FF5A5F" rx="10"/><g fill="white"><path d="M50,20 Q60,30 60,40 Q60,50 50,58 Q40,50 40,40 Q40,30 50,20 M48,38 Q48,42 50,44 Q52,42 52,38 Q52,34 50,34 Q48,34 48,38" stroke="white" stroke-width="1.5" fill="none"/></g></svg>
+        </div>
         <div class="company-name">airbnb</div>
         <div class="kpi-type">Active Listings</div>
         <div class="kpi-details">
