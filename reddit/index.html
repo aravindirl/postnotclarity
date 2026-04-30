@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PNC Research</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a' stroke='%23E8FF00' stroke-width='3'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='%23E8FF00' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='%23E8FF00' font-family='Arial'>?</text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a' stroke='%23E8FF00' stroke-width='3'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='%23E8FF00' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='%23E8FF00' font-family='Arial'>?</text%3E%3C/svg%3E" id="favicon-link" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -715,6 +715,8 @@
       width: 22px;
       height: 22px;
       flex-shrink: 0;
+      border-radius: 4px;
+      object-fit: contain;
     }
 
     /* Mobile Responsive Design */
@@ -982,14 +984,14 @@
   <div class="bottom-bar">
     <span>v0 · reddit · q2 2026</span>
     <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
-      <div style="display: flex; align-items: center; gap: 6px;">
+      <div class="about-item">
         <span>signals by</span>
-        <svg class="logo-small" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="20" fill="#D97752"/></svg>
+        <img class="logo-small" src="https://img.logo.dev/claude.ai?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="claude" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=claude.ai&sz=128'">
         <span>claude</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 6px;">
+      <div class="about-item">
         <span>built for</span>
-        <svg class="logo-small" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="20" fill="#1FBF9D"/></svg>
+        <img class="logo-small" src="https://img.logo.dev/kalshi.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="kalshi" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=kalshi.com&sz=128'">
         <span>kalshi</span>
       </div>
     </div>
@@ -1019,11 +1021,26 @@
       }
     });
 
+    function updateFavicon() {
+      const isLight = body.classList.contains('light-mode');
+      const accentColor = isLight ? '%23E53935' : '%23E8FF00';
+      const bgColor = isLight ? '%23000000' : '%230a0a0a';
+      const strokeColor = isLight ? '2' : '3';
+
+      const faviconSvg = `%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='${bgColor}' stroke='${accentColor}' stroke-width='${strokeColor}'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='${accentColor}' stroke-width='${strokeColor}' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='${accentColor}' font-family='Arial'>?</text%3E%3C/svg%3E`;
+
+      const faviconLink = document.getElementById('favicon-link');
+      faviconLink.href = `data:image/svg+xml,${faviconSvg}`;
+    }
+
+    updateFavicon();
+
     function toggleTheme() {
       body.classList.toggle('light-mode');
       const isLight = body.classList.contains('light-mode');
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
       themeToggle.textContent = isLight ? 'dark' : 'light';
+      updateFavicon();
     }
 
     // ── CHART ──────────────────────────────────────────────
