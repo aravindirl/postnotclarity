@@ -95,6 +95,14 @@
       color: #555555;
     }
 
+    body.light-mode .brand-label {
+      color: #666;
+    }
+
+    body.light-mode .brand-name {
+      color: var(--accent);
+    }
+
     body.light-mode .hero h1 {
       color: #000000;
     }
@@ -198,12 +206,36 @@
       padding: 3.5rem 4rem 1.5rem;
     }
 
+    .hero-brand {
+      margin-bottom: 2rem;
+    }
+
+    .brand-label {
+      font-size: 11px;
+      color: #999;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .brand-name {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.3px;
+      margin: 0;
+      line-height: 1.1;
+    }
+
     .hero h1 {
       font-size: clamp(44px, 8vw, 72px);
       font-weight: 700;
       color: #f0f0f0;
       line-height: 1.1;
       letter-spacing: 0.5px;
+      margin-top: 1.5rem;
     }
 
     .hero h1 span {
@@ -646,8 +678,12 @@
   </nav>
 
   <div class="hero">
-    <h1>I looked at the numbers.<br><span>good luck.</span></h1>
-    <p>not financial advice, just the signals.</p>
+    <div class="hero-brand">
+      <span class="brand-label">KPI TRACKER</span>
+      <h2 class="brand-name">POST NOT CLARITY</h2>
+    </div>
+    <h1><span>signals.</span><br>predictions.<br>clarity.</h1>
+    <p>track company kpis. predict kalshi markets. no financial advice.</p>
   </div>
 
   <div class="grid-section">
