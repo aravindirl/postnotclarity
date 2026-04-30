@@ -284,7 +284,7 @@
 
     .kpi-row {
       display: grid;
-      grid-template-columns: 90px 1fr 80px;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 1rem;
       font-size: 12px;
@@ -301,6 +301,8 @@
       font-size: 11px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      white-space: nowrap;
+      min-width: 90px;
     }
 
     .kpi-value {
@@ -308,6 +310,7 @@
       font-weight: 700;
       color: var(--accent);
       text-align: left;
+      white-space: nowrap;
     }
 
     .kpi-meta {
@@ -316,6 +319,7 @@
       letter-spacing: 0.04em;
       text-align: right;
       text-transform: uppercase;
+      white-space: nowrap;
     }
     }
 
