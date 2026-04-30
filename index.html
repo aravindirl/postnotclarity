@@ -167,57 +167,65 @@
       background: rgba(232, 255, 0, 0.04);
     }
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
     .company-logo {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
     }
 
     .company-name {
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 700;
       color: var(--text);
       text-transform: capitalize;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
     }
 
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      padding: 0.75rem 0;
-      border-top: 0.5px solid var(--border);
+    .kpi-type {
+      font-size: 12px;
+      color: #666;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
       border-bottom: 0.5px solid var(--border);
     }
 
-    .kpi-item {
+    .kpi-details {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
     }
 
-    .kpi-item .quarter {
+    .kpi-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      font-size: 12px;
+    }
+
+    .kpi-metric {
+      color: #999;
       font-size: 11px;
-      color: #666;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      min-width: 60px;
     }
 
-    .kpi-item .value {
-      font-size: 18px;
+    .kpi-value {
+      font-size: 16px;
       font-weight: 700;
       color: var(--accent);
+      flex: 1;
     }
 
-    .kpi-item .label {
+    .kpi-meta {
+      color: #666;
       font-size: 11px;
-      color: #999;
       letter-spacing: 0.04em;
+      text-align: right;
     }
     }
 
@@ -487,20 +495,19 @@
     <div class="company-grid">
       <!-- Reddit -->
       <a href="/reddit" class="company-card live">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF4500"/><circle cx="30" cy="35" r="8" fill="white"/><circle cx="70" cy="35" r="8" fill="white"/><path d="M35,55 Q50,65 65,55" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M25,50 Q25,45 20,45" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-          <div class="company-name">reddit</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">108.1M</span>
-            <span class="label">DAU</span>
+        <img class="company-logo" src="https://logo.clearbit.com/reddit.com?size=80" alt="reddit" onerror="this.style.display='none'">
+        <div class="company-name">reddit</div>
+        <div class="kpi-type">Daily Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">DAU</span>
+            <span class="kpi-value">108.1M</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">116.0M</span>
-            <span class="label">DAU</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">DAU</span>
+            <span class="kpi-value">116.0M</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -510,20 +517,19 @@
 
       <!-- Uber -->
       <div class="company-card">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#000"/><text x="50" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="300" fill="white">uber</text></svg>
-          <div class="company-name">uber</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">2.1B</span>
-            <span class="label">Trips</span>
+        <img class="company-logo" src="https://logo.clearbit.com/uber.com?size=80" alt="uber" onerror="this.style.display='none'">
+        <div class="company-name">uber</div>
+        <div class="kpi-type">Trips</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">Trips</span>
+            <span class="kpi-value">2.1B</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">2.3B</span>
-            <span class="label">Trips</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">Trips</span>
+            <span class="kpi-value">2.3B</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -533,20 +539,19 @@
 
       <!-- Netflix -->
       <div class="company-card">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#E50914" rx="12"/><g fill="white" opacity="0.9"><path d="M28,25 L38,25 L38,75 L28,75 Z M38,25 L48,60 L48,25 L58,25 L58,75 L48,75 L48,50 L48,75 L38,75 Z M58,25 L72,25 L72,35 L68,35 L68,75 L58,75 Z" fill="white"/><path d="M28,25 L28,75 L18,75 L18,25 Z" fill="#E50914" opacity="0.3"/></g></svg>
-          <div class="company-name">netflix</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">257M</span>
-            <span class="label">Subscribers</span>
+        <img class="company-logo" src="https://logo.clearbit.com/netflix.com?size=80" alt="netflix" onerror="this.style.display='none'">
+        <div class="company-name">netflix</div>
+        <div class="kpi-type">Subscribers</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">Subscribers</span>
+            <span class="kpi-value">257M</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">262M</span>
-            <span class="label">Subscribers</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">Subscribers</span>
+            <span class="kpi-value">262M</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -556,20 +561,19 @@
 
       <!-- Meta -->
       <div class="company-card">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30,40 Q50,20 70,40 Q70,60 50,75 Q30,60 30,40" fill="#0866FF"/><path d="M50,35 L58,45 L42,45 Z M42,50 L58,50 L58,65 Q50,72 42,65 Z" fill="white"/></svg>
-          <div class="company-name">meta</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">3.19B</span>
-            <span class="label">DAU</span>
+        <img class="company-logo" src="https://logo.clearbit.com/meta.com?size=80" alt="meta" onerror="this.style.display='none'">
+        <div class="company-name">meta</div>
+        <div class="kpi-type">Daily Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">DAU</span>
+            <span class="kpi-value">3.19B</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">3.24B</span>
-            <span class="label">DAU</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">DAU</span>
+            <span class="kpi-value">3.24B</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -579,20 +583,19 @@
 
       <!-- Spotify -->
       <div class="company-card">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#1DB954"/><g fill="white"><path d="M35,35 Q50,25 65,35" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M32,48 Q50,35 68,48" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M30,62 Q50,45 70,62" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/></g></svg>
-          <div class="company-name">spotify</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">626M</span>
-            <span class="label">MAU</span>
+        <img class="company-logo" src="https://logo.clearbit.com/spotify.com?size=80" alt="spotify" onerror="this.style.display='none'">
+        <div class="company-name">spotify</div>
+        <div class="kpi-type">Monthly Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">MAU</span>
+            <span class="kpi-value">626M</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">652M</span>
-            <span class="label">MAU</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">MAU</span>
+            <span class="kpi-value">652M</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -602,20 +605,19 @@
 
       <!-- Tinder -->
       <div class="company-card">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,15 L65,40 L75,30 L70,50 L85,55 L65,60 L70,80 L50,65 L30,80 L35,60 L15,55 L30,50 L25,30 L35,40 Z" fill="#FF6B6B"/></svg>
-          <div class="company-name">tinder</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">8.9M</span>
-            <span class="label">PAU</span>
+        <img class="company-logo" src="https://logo.clearbit.com/tinder.com?size=80" alt="tinder" onerror="this.style.display='none'">
+        <div class="company-name">tinder</div>
+        <div class="kpi-type">Paying Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">PAU</span>
+            <span class="kpi-value">8.9M</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">9.2M</span>
-            <span class="label">PAU</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">PAU</span>
+            <span class="kpi-value">9.2M</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -625,20 +627,19 @@
 
       <!-- FedEx -->
       <div class="company-card">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="20" y="60" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="#4D148C">Fed</text><text x="55" y="60" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="#FF6600">Ex</text></svg>
-          <div class="company-name">fedex</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">$84.6B</span>
-            <span class="label">Revenue</span>
+        <img class="company-logo" src="https://logo.clearbit.com/fedex.com?size=80" alt="fedex" onerror="this.style.display='none'">
+        <div class="company-name">fedex</div>
+        <div class="kpi-type">Revenue</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">Revenue</span>
+            <span class="kpi-value">$84.6B</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">$86.2B</span>
-            <span class="label">Revenue</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">Revenue</span>
+            <span class="kpi-value">$86.2B</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -648,20 +649,19 @@
 
       <!-- Airbnb -->
       <div class="company-card">
-        <div class="card-header">
-          <svg class="company-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FF5A5F"/><path d="M50,25 Q60,35 60,45 Q60,55 50,62 Q40,55 40,45 Q40,35 50,25 M48,42 Q48,46 50,48 Q52,46 52,42 Q52,38 50,38 Q48,38 48,42" fill="white"/></svg>
-          <div class="company-name">airbnb</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-item">
-            <span class="quarter">Q2 2026</span>
-            <span class="value">8.2M</span>
-            <span class="label">Listings</span>
+        <img class="company-logo" src="https://logo.clearbit.com/airbnb.com?size=80" alt="airbnb" onerror="this.style.display='none'">
+        <div class="company-name">airbnb</div>
+        <div class="kpi-type">Active Listings</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">Listings</span>
+            <span class="kpi-value">8.2M</span>
+            <span class="kpi-meta">Q2 2026</span>
           </div>
-          <div class="kpi-item">
-            <span class="quarter">Q3 2026</span>
-            <span class="value">8.5M</span>
-            <span class="label">Listings</span>
+          <div class="kpi-row">
+            <span class="kpi-metric">Listings</span>
+            <span class="kpi-value">8.5M</span>
+            <span class="kpi-meta">Q3 2026</span>
           </div>
         </div>
         <div class="card-status">
@@ -676,12 +676,16 @@
     <div class="about-right">
       <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666;">
         <span>signals by</span>
-        <svg class="logo-small" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="20" fill="#D97752"/></svg>
+        <svg class="logo-small" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25,50 Q35,35 50,30 Q65,35 75,50 Q75,65 50,80 Q25,65 25,50" fill="#D97752"/>
+          <circle cx="40" cy="50" r="4" fill="white"/>
+          <circle cx="60" cy="50" r="4" fill="white"/>
+        </svg>
         <span>claude</span>
       </div>
       <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; margin-top: 6px;">
         <span>built for</span>
-        <svg class="logo-small" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" rx="20" fill="#1FBF9D"/></svg>
+        <img class="logo-small" src="https://logo.clearbit.com/kalshi.com?size=32" alt="kalshi" style="width: 18px; height: 18px;" onerror="this.style.display='none'">
         <span>kalshi</span>
       </div>
     </div>
