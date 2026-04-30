@@ -455,18 +455,21 @@
     }
 
     .company-card.frozen {
-      opacity: 0.55;
+      opacity: 0.4;
       cursor: default;
       pointer-events: none;
+      border-style: dashed;
+      filter: grayscale(0.5);
     }
 
     .company-card.frozen:hover {
       border-color: var(--border);
       background: var(--bg2);
+      transform: none;
     }
 
     body.light-mode .company-card.frozen {
-      opacity: 0.5;
+      opacity: 0.35;
     }
 
     .footer {
