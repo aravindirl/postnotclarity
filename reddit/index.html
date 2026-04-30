@@ -21,6 +21,18 @@
       --border2: #222;
     }
 
+    body.light-mode {
+      --bg: #ffffff;
+      --bg2: #f5f5f5;
+      --bg3: #efefef;
+      --accent: #D97752;
+      --bull: #1D9E75;
+      --bear: #E24B4A;
+      --text: #1a1a1a;
+      --border: #ddd;
+      --border2: #ccc;
+    }
+
     html, body {
       background: var(--bg);
       color: var(--text);
@@ -77,6 +89,25 @@
       letter-spacing: 0.04em;
     }
     .nav-back:hover { color: var(--accent); }
+
+    .theme-toggle {
+      background: none;
+      border: 0.5px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'IBM Plex Mono', 'Roboto Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .theme-toggle:hover {
+      background: var(--bg3);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
 
     /* HEADER */
     .header {
@@ -519,7 +550,10 @@
         <span class="nav-label">POST NOT CLARITY</span>
       </a>
     </div>
-    <a href="/" class="nav-back">← back to home</a>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="/" class="nav-back">← back to home</a>
+      <button class="theme-toggle" id="theme-toggle">light</button>
+    </div>
   </nav>
 
   <!-- HEADER -->
@@ -628,6 +662,36 @@
   </div>
 
   <script>
+    // ── THEME TOGGLE ────────────────────────────────────────
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Load theme preference from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+      body.classList.add('light-mode');
+      themeToggle.textContent = 'dark';
+    } else {
+      themeToggle.textContent = 'light';
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Toggle theme on T key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 't') {
+        toggleTheme();
+      }
+    });
+
+    function toggleTheme() {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      themeToggle.textContent = isLight ? 'dark' : 'light';
+    }
+
     // ── CHART ──────────────────────────────────────────────
     (function() {
       const ctx = document.getElementById('dauChart').getContext('2d');

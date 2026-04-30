@@ -16,6 +16,14 @@
       --border: #1a1a1a;
     }
 
+    body.light-mode {
+      --bg: #ffffff;
+      --accent: #D97752;
+      --text: #1a1a1a;
+      --dim: #e8e8e8;
+      --border: #ddd;
+    }
+
     html, body {
       background: var(--bg);
       color: var(--text);
@@ -77,6 +85,25 @@
 
     .nav-home:hover {
       opacity: 0.85;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 0.5px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'IBM Plex Mono', 'Roboto Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .theme-toggle:hover {
+      background: var(--dim);
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .hero {
@@ -400,7 +427,7 @@
       </svg>
       <span class="nav-label">POST NOT CLARITY</span>
     </a>
-    <span class="nav-right"></span>
+    <button class="theme-toggle" id="theme-toggle">light</button>
   </nav>
 
   <div class="hero">
@@ -517,7 +544,34 @@
   </div>
 
   <script>
-    // Grid layout - no additional JavaScript needed
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Load theme preference from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+      body.classList.add('light-mode');
+      themeToggle.textContent = 'dark';
+    } else {
+      themeToggle.textContent = 'light';
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Toggle theme on T key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 't') {
+        toggleTheme();
+      }
+    });
+
+    function toggleTheme() {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      themeToggle.textContent = isLight ? 'dark' : 'light';
+    }
   </script>
 </body>
 </html>
