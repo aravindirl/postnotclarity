@@ -359,6 +359,23 @@
       opacity: 0.5;
     }
 
+    .footer {
+      padding: 2rem 4rem;
+      text-align: center;
+      border-top: 0.5px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    .footer p {
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.03em;
+    }
+
+    body.light-mode .footer p {
+      color: #888;
+    }
+
     .about {
       padding: 3rem 4rem;
       border-top: 0.5px solid var(--border);
@@ -401,6 +418,36 @@
       width: 22px;
       height: 22px;
       flex-shrink: 0;
+    }
+
+    .about-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .about-item:not(:first-child) {
+      margin-top: 6px;
+    }
+
+    body.light-mode .about-item {
+      color: #888;
+    }
+
+    body.light-mode .about p {
+      color: #555;
+    }
+
+    body.light-mode .about a {
+      color: #666;
+      border-bottom-color: #ccc;
+    }
+
+    body.light-mode .about a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
     }
 
     /* Mobile Responsive Design */
@@ -705,12 +752,12 @@
   <div class="about">
     <p>I run an AI agent against public signals to estimate where company KPIs are headed each quarter. Built for Kalshi prediction markets, updated weekly. If you want to reach me — <a href="https://aravindirl.com" target="_blank">aravindirl.com</a>.</p>
     <div class="about-right">
-      <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666;">
+      <div class="about-item">
         <span>signals by</span>
         <img class="logo-small" src="https://img.logo.dev/claude.ai?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="claude" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=claude.ai&sz=128'">
         <span>claude</span>
       </div>
-      <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; margin-top: 6px;">
+      <div class="about-item">
         <span>built for</span>
         <img class="logo-small" src="https://img.logo.dev/kalshi.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="kalshi" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=kalshi.com&sz=128'">
         <span>kalshi</span>
@@ -718,8 +765,8 @@
     </div>
   </div>
 
-  <div style="padding: 2rem 4rem; text-align: center; border-top: 0.5px solid #1a1a1a; margin-top: 2rem;">
-    <p style="font-size: 11px; color: #666; letter-spacing: 0.03em;">© 2026 postnotclarity. all rights reserved.</p>
+  <div class="footer">
+    <p>© 2026 postnotclarity. all rights reserved.</p>
   </div>
 
   <script>
