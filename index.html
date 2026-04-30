@@ -733,7 +733,7 @@
     function updateFavicon() {
       const isLight = body.classList.contains('light-mode');
       const accentColor = isLight ? '%23E53935' : '%23E8FF00';
-      const bgColor = isLight ? '%23ffffff' : '%230a0a0a';
+      const bgColor = isLight ? '%23000000' : '%230a0a0a';
       const strokeColor = isLight ? '2' : '3';
 
       const faviconSvg = `%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='${bgColor}' stroke='${accentColor}' stroke-width='${strokeColor}'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='${accentColor}' stroke-width='${strokeColor}' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='${accentColor}' font-family='Arial'>?</text%3E%3C/svg%3E`;
