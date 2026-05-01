@@ -770,6 +770,14 @@
       border-color: var(--accent);
     }
 
+    body.light-mode .hero-right > div:nth-child(2) {
+      color: #c8f400;
+    }
+
+    body.light-mode .hero-right svg polyline {
+      stroke: #c8f400;
+    }
+
     /* Mobile Responsive Design */
     @media (max-width: 768px) {
       .nav {
@@ -957,14 +965,12 @@
       <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
     </div>
     <div class="hero-right">
-      <div class="sparkline-container">
-        <span class="sparkline-label" id="sparkline-label">Market Signal Index · Live</span>
-        <span class="sparkline-value" id="sparkline-value">+14.3%</span>
-        <span class="sparkline-subtitle" id="sparkline-subtitle">avg prediction confidence this week</span>
-        <svg class="sparkline-chart" id="sparkline-chart" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <polyline id="sparkline-path" points="0,75 25,70 50,65 75,60 100,58 125,55 150,50 175,48 200,45 225,50 250,55 275,52 300,48 325,45 350,42 375,40 400,45" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"/>
-        </svg>
-      </div>
+      <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">MARKET SIGNAL INDEX · LIVE</div>
+      <div style="font-size: 48px; font-weight: 700; color: #e63422; margin-bottom: 0.5rem;">+14.3%</div>
+      <div style="font-size: 11px; color: #aaa; margin-bottom: 1.5rem;">avg prediction confidence this week</div>
+      <svg viewBox="0 0 280 80" width="100%" height="80" preserveAspectRatio="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="0,62 28,55 56,60 84,42 112,48 140,35 168,40 196,22 224,18 252,28 280,10" fill="none" stroke="#e63422" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
   </div>
 
