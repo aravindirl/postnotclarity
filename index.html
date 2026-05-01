@@ -367,6 +367,7 @@
       align-items: flex-start;
       gap: 6rem;
       max-width: 1400px;
+      overflow: visible;
     }
 
     .hero-left {
@@ -390,6 +391,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      overflow: visible;
       opacity: 0;
       animation: fadeIn 0.6s ease-out 0.2s forwards;
     }
@@ -770,12 +772,20 @@
       border-color: var(--accent);
     }
 
-    body.light-mode .hero-right > div:nth-child(2) {
+    .hero-right > div:nth-child(2) {
       color: #c8f400;
     }
 
-    body.light-mode .hero-right svg polyline {
+    .hero-right svg polyline {
       stroke: #c8f400;
+    }
+
+    body.light-mode .hero-right > div:nth-child(2) {
+      color: #e63422;
+    }
+
+    body.light-mode .hero-right svg polyline {
+      stroke: #e63422;
     }
 
     /* Mobile Responsive Design */
