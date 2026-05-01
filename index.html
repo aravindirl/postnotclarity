@@ -747,6 +747,22 @@
       border-color: var(--accent);
     }
 
+    .gridline {
+      stroke: #2a2a2a;
+    }
+
+    body.light-mode .gridline {
+      stroke: #eee;
+    }
+
+    .axis-label {
+      fill: #666;
+    }
+
+    body.light-mode .axis-label {
+      fill: #aaa;
+    }
+
 
     /* Mobile Responsive Design */
     @media (max-width: 768px) {
@@ -938,13 +954,8 @@
       <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">MARKET SIGNAL INDEX · LIVE</div>
       <div style="font-size: 48px; font-weight: 700; color: #e63422; margin-bottom: 1.5rem; margin-top: 0.5rem;">+14.3%</div>
       <div style="font-size: 11px; color: #aaa; margin-bottom: 1.5rem;">avg prediction confidence this week</div>
-      <svg viewBox="0 0 280 80" width="100%" height="80" preserveAspectRatio="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-        <!-- Y-axis -->
-        <line x1="0" y1="0" x2="0" y2="80" stroke="#ccc" stroke-width="0.5"/>
-        <!-- X-axis -->
-        <line x1="0" y1="70" x2="280" y2="70" stroke="#ccc" stroke-width="0.5"/>
-        <!-- Sparkline -->
-        <polyline points="0,62 28,55 56,60 84,42 112,48 140,35 168,40 196,22 224,18 252,28 280,10" fill="none" stroke="#e63422" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg id="dau-chart" viewBox="0 0 400 160" width="100%" height="160" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+        <!-- Chart will be populated by JavaScript -->
       </svg>
     </div>
   </div>
@@ -1177,13 +1188,74 @@
       }
     }
 
-    // Example: Update sparkline with sample data
-    updateSparkline(
-      [30, 32, 35, 33, 38, 42, 45, 43, 48, 52, 55, 58, 62, 65, 68, 66, 70],
-      'Market Signal Index · Live',
-      '+14.3%',
-      'avg prediction confidence this week'
-    );
+    // Reddit DAU weekly data (in millions)
+    const dauData = [
+      { week: 'W1', dau: 52.1 },
+      { week: 'W2', dau: 54.3 },
+      { week: 'W3', dau: 53.8 },
+      { week: 'W4', dau: 56.2 },
+      { week: 'W5', dau: 58.7 },
+      { week: 'W6', dau: 57.4 },
+      { week: 'W7', dau: 61.2 },
+      { week: 'W8', dau: 63.9 },
+      { week: 'W9', dau: 62.5 },
+      { week: 'W10', dau: 66.1 },
+      { week: 'W11', dau: 68.4 },
+    ];
+
+    // Render DAU chart
+    function renderDAUChart() {
+      const chart = document.getElementById('dau-chart');
+      const padding = { left: 48, right: 12, top: 12, bottom: 28 };
+      const chartWidth = 400 - padding.left - padding.right;
+      const chartHeight = 160 - padding.top - padding.bottom;
+
+      const minDAU = Math.min(...dauData.map(d => d.dau));
+      const maxDAU = Math.max(...dauData.map(d => d.dau));
+      const dauRange = maxDAU - minDAU;
+
+      // Calculate Y positions
+      const yScale = chartHeight / dauRange;
+      const getYPos = (dau) => padding.top + chartHeight - (dau - minDAU) * yScale;
+
+      // Calculate X positions
+      const xScale = chartWidth / (dauData.length - 1);
+      const getXPos = (index) => padding.left + index * xScale;
+
+      let svg = '';
+
+      // Draw 4 horizontal gridlines
+      const gridCount = 4;
+      for (let i = 0; i <= gridCount; i++) {
+        const y = padding.top + (i * chartHeight / gridCount);
+        const dau = maxDAU - (i * dauRange / gridCount);
+        svg += `<line x1="${padding.left}" y1="${y}" x2="${400 - padding.right}" y2="${y}" class="gridline" stroke-width="0.5"/>`;
+        svg += `<text x="${padding.left - 6}" y="${y + 3}" font-size="9" text-anchor="end" class="axis-label">${dau.toFixed(1)}M</text>`;
+      }
+
+      // Draw X axis labels (every other week)
+      for (let i = 0; i < dauData.length; i += 2) {
+        const x = getXPos(i);
+        const y = 160 - padding.bottom + 14;
+        svg += `<text x="${x}" y="${y}" font-size="9" text-anchor="middle" class="axis-label">${dauData[i].week}</text>`;
+      }
+
+      // Draw polyline
+      const points = dauData.map((d, i) => `${getXPos(i)},${getYPos(d.dau)}`).join(' ');
+      svg += `<polyline points="${points}" fill="none" stroke="#e63422" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+      // Draw data points
+      for (let i = 0; i < dauData.length; i++) {
+        const x = getXPos(i);
+        const y = getYPos(dauData[i].dau);
+        svg += `<circle cx="${x}" cy="${y}" r="3" fill="#e63422"/>`;
+      }
+
+      chart.innerHTML = svg;
+    }
+
+    // Render chart on load
+    renderDAUChart();
   </script>
 </body>
 </html>
