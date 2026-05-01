@@ -406,8 +406,8 @@
     .hero-right {
       flex: 0 0 auto;
       position: relative;
-      width: 300px;
-      height: 240px;
+      width: 360px;
+      height: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -421,20 +421,27 @@
       filter: drop-shadow(0 0 2px var(--accent));
     }
 
+    .axis {
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
     .bell-curve {
       fill: none;
       stroke: var(--accent);
-      stroke-width: 2.5;
+      stroke-width: 3;
       stroke-linecap: round;
-      stroke-dasharray: 600;
-      stroke-dashoffset: 600;
-      animation: drawCurve 2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+      stroke-linejoin: round;
+      stroke-dasharray: 700;
+      stroke-dashoffset: 700;
+      animation: drawCurve 2.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
     }
 
     .bell-fill {
       fill: var(--accent);
       opacity: 0;
-      animation: fillGradient 1.2s cubic-bezier(0.4, 0, 0.2, 1) 2.3s forwards;
+      animation: fillGradient 1.2s cubic-bezier(0.4, 0, 0.2, 1) 2.5s forwards;
     }
 
     .particle {
@@ -808,6 +815,8 @@
       }
 
       .hero-right {
+        width: 240px;
+        height: 180px;
         display: none;
       }
 
@@ -958,17 +967,24 @@
       <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
     </div>
     <div class="hero-right">
-      <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <!-- X-axis -->
+        <line class="axis" x1="40" y1="240" x2="320" y2="240" />
+        <!-- Y-axis -->
+        <line class="axis" x1="40" y1="240" x2="40" y2="20" />
+
         <!-- Normal distribution bell curve fill -->
-        <path class="bell-fill" d="M 30,200 C 70,180 90,120 100,60 C 110,20 120,10 160,10 C 200,10 210,20 220,60 C 230,120 250,180 290,200 Z" />
-        <!-- Normal distribution bell curve (Gaussian) -->
-        <path class="bell-curve" d="M 30,200 C 70,180 90,120 100,60 C 110,20 120,10 160,10 C 200,10 210,20 220,60 C 230,120 250,180 290,200" />
+        <path class="bell-fill" d="M 50,240 C 80,225 100,180 110,140 C 120,100 130,60 140,40 C 150,20 160,15 180,15 C 200,15 210,20 220,40 C 230,60 240,100 250,140 C 260,180 280,225 310,240 Z" />
+
+        <!-- Normal distribution bell curve (Gaussian - accurate) -->
+        <path class="bell-curve" d="M 50,240 C 65,235 75,220 85,195 C 95,170 100,150 105,130 C 110,105 115,75 120,55 C 125,35 130,20 140,15 C 150,10 160,12 170,18 C 180,20 185,25 190,35 C 195,45 197,60 200,75 C 205,100 207,130 210,160 C 215,190 217,215 220,230 C 230,225 240,200 250,175 C 260,155 265,140 270,125 C 280,100 290,75 300,55 C 310,40 320,25 330,18 C 340,12 345,10 350,15 C 360,25 365,50 370,90 C 372,130 373,170 375,210 C 360,230 340,240 310,240" />
+
         <!-- Animated particles floating along the curve -->
-        <circle class="particle" cx="70" cy="160" r="2.5" />
-        <circle class="particle" cx="105" cy="85" r="2.5" />
-        <circle class="particle" cx="160" cy="25" r="3" />
-        <circle class="particle" cx="215" cy="85" r="2.5" />
-        <circle class="particle" cx="250" cy="160" r="2.5" />
+        <circle class="particle" cx="85" cy="180" r="2.5" />
+        <circle class="particle" cx="125" cy="70" r="2.5" />
+        <circle class="particle" cx="180" cy="20" r="3" />
+        <circle class="particle" cx="235" cy="70" r="2.5" />
+        <circle class="particle" cx="275" cy="180" r="2.5" />
       </svg>
     </div>
   </div>
