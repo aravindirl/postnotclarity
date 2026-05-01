@@ -365,8 +365,8 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 4rem;
-      max-width: 1200px;
+      gap: 6rem;
+      max-width: 1400px;
     }
 
     .hero-left {
@@ -379,16 +379,14 @@
       display: block;
       height: 2px;
       background: var(--accent);
-      width: 60px;
+      width: 100px;
       margin-top: 1.5rem;
       animation: slideInLine 0.8s ease-out 0.3s both;
     }
 
     .hero-right {
-      flex: 0 0 auto;
+      flex: 0 0 450px;
       position: relative;
-      width: 320px;
-      height: 120px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -399,26 +397,34 @@
     .sparkline-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 1.25rem;
     }
 
     .sparkline-label {
-      font-size: 11px;
+      font-size: 12px;
       color: #999;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 500;
+      letter-spacing: 0.1em;
+      font-weight: 600;
     }
 
     .sparkline-value {
-      font-size: 24px;
+      font-size: 56px;
       font-weight: 700;
       color: var(--accent);
+      line-height: 1;
+    }
+
+    .sparkline-subtitle {
+      font-size: 13px;
+      color: #aaa;
+      letter-spacing: 0.02em;
     }
 
     .sparkline-chart {
       width: 100%;
-      height: 60px;
+      height: 100px;
+      margin-top: 0.5rem;
     }
 
     .hero-right {
@@ -951,10 +957,11 @@
     </div>
     <div class="hero-right">
       <div class="sparkline-container">
-        <span class="sparkline-label">KPI Trend (Q2 2026)</span>
-        <span class="sparkline-value" id="sparkline-value">+12.5%</span>
-        <svg class="sparkline-chart" id="sparkline-chart" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <polyline id="sparkline-path" points="0,45 15,42 30,38 45,35 60,32 75,30 90,28 105,25 120,20 135,18 150,15 165,18 180,22 195,25 210,28 225,32 240,35 255,38 270,40 285,42 300,45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"/>
+        <span class="sparkline-label" id="sparkline-label">Market Signal Index · Live</span>
+        <span class="sparkline-value" id="sparkline-value">+14.3%</span>
+        <span class="sparkline-subtitle" id="sparkline-subtitle">avg prediction confidence this week</span>
+        <svg class="sparkline-chart" id="sparkline-chart" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <polyline id="sparkline-path" points="0,75 25,70 50,65 75,60 100,58 125,55 150,50 175,48 200,45 225,50 250,55 275,52 300,48 325,45 350,42 375,40 400,45" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"/>
         </svg>
       </div>
     </div>
@@ -1161,17 +1168,21 @@
     }
 
     // Sparkline update function
-    function updateSparkline(dataPoints, label, value) {
+    function updateSparkline(dataPoints, label, value, subtitle) {
       // dataPoints should be an array of numbers (0-100)
+      const labelEl = document.getElementById('sparkline-label');
       const valueEl = document.getElementById('sparkline-value');
+      const subtitleEl = document.getElementById('sparkline-subtitle');
       const pathEl = document.getElementById('sparkline-path');
 
+      if (labelEl) labelEl.textContent = label;
       if (valueEl) valueEl.textContent = value;
+      if (subtitleEl) subtitleEl.textContent = subtitle;
 
       if (pathEl && dataPoints.length > 0) {
-        const width = 300;
-        const height = 60;
-        const padding = 5;
+        const width = 400;
+        const height = 100;
+        const padding = 15;
         const pointSpacing = width / (dataPoints.length - 1 || 1);
 
         const points = dataPoints.map((point, i) => {
@@ -1185,7 +1196,12 @@
     }
 
     // Example: Update sparkline with sample data
-    updateSparkline([20, 25, 30, 28, 35, 40, 45, 42, 48, 52, 55, 58, 62, 65, 68], 'KPI Trend (Q2 2026)', '+12.5%');
+    updateSparkline(
+      [30, 32, 35, 33, 38, 42, 45, 43, 48, 52, 55, 58, 62, 65, 68, 66, 70],
+      'Market Signal Index · Live',
+      '+14.3%',
+      'avg prediction confidence this week'
+    );
   </script>
 </body>
 </html>
