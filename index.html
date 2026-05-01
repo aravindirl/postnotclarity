@@ -362,10 +362,15 @@
 
     .hero {
       padding: 4.5rem 4rem 2rem;
-      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 4rem;
+      max-width: 1200px;
     }
 
     .hero-left {
+      flex: 1;
       position: relative;
     }
 
@@ -377,6 +382,43 @@
       width: 60px;
       margin-top: 1.5rem;
       animation: slideInLine 0.8s ease-out 0.3s both;
+    }
+
+    .hero-right {
+      flex: 0 0 auto;
+      position: relative;
+      width: 320px;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeIn 0.6s ease-out 0.2s forwards;
+    }
+
+    .sparkline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sparkline-label {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+    }
+
+    .sparkline-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .sparkline-chart {
+      width: 100%;
+      height: 60px;
     }
 
     .hero-right {
@@ -755,12 +797,9 @@
         padding: 2.5rem 1.5rem 1.25rem;
         flex-direction: column;
         gap: 1.5rem;
-        min-height: auto;
       }
 
       .hero-right {
-        width: 240px;
-        height: 180px;
         display: none;
       }
 
@@ -909,6 +948,15 @@
     <div class="hero-left">
       <h1>tracking company<br>signals.<br><span>predicting market<br>moves.</span></h1>
       <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
+    </div>
+    <div class="hero-right">
+      <div class="sparkline-container">
+        <span class="sparkline-label">KPI Trend (Q2 2026)</span>
+        <span class="sparkline-value" id="sparkline-value">+12.5%</span>
+        <svg class="sparkline-chart" id="sparkline-chart" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <polyline id="sparkline-path" points="0,45 15,42 30,38 45,35 60,32 75,30 90,28 105,25 120,20 135,18 150,15 165,18 180,22 195,25 210,28 225,32 240,35 255,38 270,40 285,42 300,45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"/>
+        </svg>
+      </div>
     </div>
   </div>
 
@@ -1111,6 +1159,33 @@
       themeToggle.textContent = isLight ? 'dark' : 'light';
       updateFavicon();
     }
+
+    // Sparkline update function
+    function updateSparkline(dataPoints, label, value) {
+      // dataPoints should be an array of numbers (0-100)
+      const valueEl = document.getElementById('sparkline-value');
+      const pathEl = document.getElementById('sparkline-path');
+
+      if (valueEl) valueEl.textContent = value;
+
+      if (pathEl && dataPoints.length > 0) {
+        const width = 300;
+        const height = 60;
+        const padding = 5;
+        const pointSpacing = width / (dataPoints.length - 1 || 1);
+
+        const points = dataPoints.map((point, i) => {
+          const x = i * pointSpacing;
+          const y = height - (point / 100 * (height - padding * 2)) - padding;
+          return `${x},${y}`;
+        }).join(' ');
+
+        pathEl.setAttribute('points', points);
+      }
+    }
+
+    // Example: Update sparkline with sample data
+    updateSparkline([20, 25, 30, 28, 35, 40, 45, 42, 48, 52, 55, 58, 62, 65, 68], 'KPI Trend (Q2 2026)', '+12.5%');
   </script>
 </body>
 </html>
