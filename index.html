@@ -22,6 +22,28 @@
       }
     }
 
+    @keyframes rotateIn {
+      from {
+        opacity: 0;
+        transform: rotate(-45deg) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -264,11 +286,19 @@
 
     .hero {
       padding: 4.5rem 4rem 2rem;
-      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 3rem;
+      min-height: 320px;
+    }
+
+    .hero-left {
+      flex: 1;
       position: relative;
     }
 
-    .hero::after {
+    .hero-left::after {
       content: '';
       display: block;
       height: 2px;
@@ -276,6 +306,36 @@
       width: 60px;
       margin-top: 1.5rem;
       animation: slideInLine 0.8s ease-out 0.3s both;
+    }
+
+    .hero-right {
+      flex: 0 0 auto;
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 2px solid var(--accent);
+      border-radius: 0;
+      animation: rotateIn 0.8s ease-out 0.2s both;
+    }
+
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      animation: pulse 3s ease-in-out 0.4s infinite;
     }
 
     .hero h1 {
@@ -617,6 +677,13 @@
 
       .hero {
         padding: 2.5rem 1.5rem 1.25rem;
+        flex-direction: column;
+        gap: 1.5rem;
+        min-height: auto;
+      }
+
+      .hero-right {
+        display: none;
       }
 
       .hero h1 {
@@ -761,8 +828,11 @@
   </nav>
 
   <div class="hero">
-    <h1>tracking company<br>signals.<br><span>predicting market<br>moves.</span></h1>
-    <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
+    <div class="hero-left">
+      <h1>tracking company<br>signals.<br><span>predicting market<br>moves.</span></h1>
+      <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
+    </div>
+    <div class="hero-right"></div>
   </div>
 
   <div class="grid-section">
