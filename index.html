@@ -11,6 +11,115 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    @keyframes slideInLine {
+      from {
+        width: 0;
+        opacity: 0;
+      }
+      to {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+
+    @keyframes rotateIn {
+      from {
+        opacity: 0;
+        transform: rotate(-45deg) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes rotateSlow {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rotateFast {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
+    @keyframes floatUp {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes drawLine {
+      from {
+        stroke-dashoffset: 400;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes drawSpiral {
+      from {
+        stroke-dashoffset: 800;
+        opacity: 0;
+      }
+      to {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+    }
+
+    @keyframes spiralGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+      50% {
+        filter: drop-shadow(0 0 8px var(--accent));
+      }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% {
+        opacity: 0.6;
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 6px var(--accent));
+      }
+    }
+
+    @keyframes pulseWave {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -252,8 +361,84 @@
     }
 
     .hero {
-      padding: 4.5rem 4rem 2rem;
-      max-width: 900px;
+      padding: 1.5rem 4rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 3rem;
+      max-width: 1400px;
+      overflow: visible;
+    }
+
+    .hero-left {
+      flex: 1;
+      position: relative;
+    }
+
+    .hero-left::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--accent);
+      width: 100px;
+      margin-top: 0.75rem;
+      animation: slideInLine 0.8s ease-out 0.3s both;
+    }
+
+    .hero-right {
+      flex: 0 0 500px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: visible;
+      opacity: 0;
+      animation: fadeIn 0.6s ease-out 0.2s forwards;
+      margin-top: -0.5rem;
+    }
+
+    .sparkline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sparkline-label {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+
+    .sparkline-value {
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 0.95;
+    }
+
+    .sparkline-subtitle {
+      font-size: 13px;
+      color: #aaa;
+      letter-spacing: 0.02em;
+      margin-top: -0.5rem;
+    }
+
+    .sparkline-chart {
+      width: 100%;
+      height: 120px;
+      margin-top: 1.5rem;
+    }
+
+    .heartbeat-wave {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: pulseWave 3s linear infinite, heartbeat 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 2px var(--accent));
     }
 
     .hero h1 {
@@ -455,18 +640,29 @@
     }
 
     .company-card.frozen {
-      opacity: 0.55;
+      opacity: 0.4;
       cursor: default;
       pointer-events: none;
+      border-style: dashed;
+      filter: grayscale(0.5);
     }
 
     .company-card.frozen:hover {
       border-color: var(--border);
       background: var(--bg2);
+      transform: none;
     }
 
     body.light-mode .company-card.frozen {
-      opacity: 0.5;
+      opacity: 0.35;
+    }
+
+    body.light-mode .sparkline-label {
+      color: #555555;
+    }
+
+    body.light-mode .sparkline-subtitle {
+      color: #888888;
     }
 
     .footer {
@@ -560,6 +756,23 @@
       border-color: var(--accent);
     }
 
+    .gridline {
+      stroke: #2a2a2a;
+    }
+
+    body.light-mode .gridline {
+      stroke: #eee;
+    }
+
+    .axis-label {
+      fill: #666;
+    }
+
+    body.light-mode .axis-label {
+      fill: #aaa;
+    }
+
+
     /* Mobile Responsive Design */
     @media (max-width: 768px) {
       .nav {
@@ -572,8 +785,17 @@
         gap: 12px;
       }
 
+      .nav-logo {
+        width: 56px;
+        height: 56px;
+      }
+
       .nav-name {
         font-size: 14px;
+      }
+
+      .nav-label {
+        font-size: 16px;
       }
 
       .nav svg {
@@ -583,6 +805,13 @@
 
       .hero {
         padding: 2.5rem 1.5rem 1.25rem;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .hero-right {
+        flex: 0 0 100%;
+        margin-top: 2rem;
       }
 
       .hero h1 {
@@ -643,8 +872,17 @@
         padding: 1.25rem 1rem;
       }
 
+      .nav-logo {
+        width: 52px;
+        height: 52px;
+      }
+
       .nav-name {
         font-size: 13px;
+      }
+
+      .nav-label {
+        font-size: 14px;
       }
 
       .nav svg {
@@ -718,8 +956,18 @@
   </nav>
 
   <div class="hero">
-    <h1>track company signals.<br><span>predict market moves.</span></h1>
-    <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
+    <div class="hero-left">
+      <h1>tracking company<br>signals.<br><span>predicting market<br>moves.</span></h1>
+      <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
+    </div>
+    <div class="hero-right">
+      <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">REDDIT DAU · Q2 2026 WEEKLY TRACKER · LIVE</div>
+      <div style="font-size: 48px; font-weight: 700; color: #e63422; margin-bottom: 1.5rem; margin-top: 0.5rem;">+14.3%</div>
+      <div style="font-size: 11px; color: #aaa; margin-bottom: 1.5rem;">avg prediction confidence this week</div>
+      <svg id="dau-chart" viewBox="0 0 400 160" width="100%" height="160" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+        <!-- Chart will be populated by JavaScript -->
+      </svg>
+    </div>
   </div>
 
   <div class="grid-section">
@@ -921,6 +1169,129 @@
       themeToggle.textContent = isLight ? 'dark' : 'light';
       updateFavicon();
     }
+
+    // Sparkline update function
+    function updateSparkline(dataPoints, label, value, subtitle) {
+      // dataPoints should be an array of numbers (0-100)
+      const labelEl = document.getElementById('sparkline-label');
+      const valueEl = document.getElementById('sparkline-value');
+      const subtitleEl = document.getElementById('sparkline-subtitle');
+      const pathEl = document.getElementById('sparkline-path');
+
+      if (labelEl) labelEl.textContent = label;
+      if (valueEl) valueEl.textContent = value;
+      if (subtitleEl) subtitleEl.textContent = subtitle;
+
+      if (pathEl && dataPoints.length > 0) {
+        const width = 400;
+        const height = 100;
+        const padding = 15;
+        const pointSpacing = width / (dataPoints.length - 1 || 1);
+
+        const points = dataPoints.map((point, i) => {
+          const x = i * pointSpacing;
+          const y = height - (point / 100 * (height - padding * 2)) - padding;
+          return `${x},${y}`;
+        }).join(' ');
+
+        pathEl.setAttribute('points', points);
+      }
+    }
+
+    // Reddit DAU weekly data (in millions) - Q2 2026 (12 weeks)
+    // This data is populated by the AI agent and stored in localStorage
+    // Weeks 1-4 are complete (4 weeks into Q2), weeks 5-12 pending
+    const dauData = (() => {
+      const stored = localStorage.getItem('reddit_dau_q2_2026');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      // Default: Weeks 1-4 with sample data, 5-12 empty
+      return [
+        { week: 'W1', dau: 52.3 },
+        { week: 'W2', dau: 53.8 },
+        { week: 'W3', dau: 54.1 },
+        { week: 'W4', dau: 55.2 },
+        { week: 'W5', dau: null },
+        { week: 'W6', dau: null },
+        { week: 'W7', dau: null },
+        { week: 'W8', dau: null },
+        { week: 'W9', dau: null },
+        { week: 'W10', dau: null },
+        { week: 'W11', dau: null },
+        { week: 'W12', dau: null },
+      ];
+    })();
+
+    // Function for AI agent to update DAU data
+    window.updateRedditDAU = (weekNumber, dauValue) => {
+      if (weekNumber >= 1 && weekNumber <= 12) {
+        dauData[weekNumber - 1].dau = dauValue;
+        localStorage.setItem('reddit_dau_q2_2026', JSON.stringify(dauData));
+        renderDAUChart();
+      }
+    };
+
+    // Render DAU chart
+    function renderDAUChart() {
+      const chart = document.getElementById('dau-chart');
+      const padding = { left: 48, right: 12, top: 12, bottom: 28 };
+      const chartWidth = 400 - padding.left - padding.right;
+      const chartHeight = 160 - padding.top - padding.bottom;
+
+      // Only calculate range from non-null values
+      const validData = dauData.filter(d => d.dau !== null);
+      if (validData.length === 0) return;
+
+      const minDAU = Math.min(...validData.map(d => d.dau));
+      const maxDAU = Math.max(...validData.map(d => d.dau));
+      const dauRange = maxDAU - minDAU || 1;
+
+      // Calculate Y positions
+      const yScale = chartHeight / dauRange;
+      const getYPos = (dau) => padding.top + chartHeight - (dau - minDAU) * yScale;
+
+      // Calculate X positions for 12 weeks
+      const xScale = chartWidth / (12 - 1); // 12 weeks total
+      const getXPos = (index) => padding.left + index * xScale;
+
+      let svg = '';
+
+      // Draw 4 horizontal gridlines
+      const gridCount = 4;
+      for (let i = 0; i <= gridCount; i++) {
+        const y = padding.top + (i * chartHeight / gridCount);
+        const dau = maxDAU - (i * dauRange / gridCount);
+        svg += `<line x1="${padding.left}" y1="${y}" x2="${400 - padding.right}" y2="${y}" class="gridline" stroke-width="0.5"/>`;
+        svg += `<text x="${padding.left - 6}" y="${y + 3}" font-size="9" text-anchor="end" class="axis-label">${dau.toFixed(1)}M</text>`;
+      }
+
+      // Draw X axis labels (every other week for all 12 weeks)
+      for (let i = 0; i < 12; i += 2) {
+        const x = getXPos(i);
+        const y = 160 - padding.bottom + 14;
+        svg += `<text x="${x}" y="${y}" font-size="9" text-anchor="middle" class="axis-label">${dauData[i].week}</text>`;
+      }
+
+      // Draw polyline (only connecting non-null values)
+      const validIndices = dauData.map((d, i) => d.dau !== null ? i : null).filter(i => i !== null);
+      if (validIndices.length > 0) {
+        const points = validIndices.map(i => `${getXPos(i)},${getYPos(dauData[i].dau)}`).join(' ');
+        svg += `<polyline points="${points}" fill="none" stroke="#e63422" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+        // Draw data points
+        for (const i of validIndices) {
+          const x = getXPos(i);
+          const y = getYPos(dauData[i].dau);
+          svg += `<circle cx="${x}" cy="${y}" r="3" fill="#e63422"/>`;
+        }
+      }
+
+      chart.innerHTML = svg;
+    }
+
+    // Render chart on load
+    renderDAUChart();
   </script>
 </body>
 </html>
