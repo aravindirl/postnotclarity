@@ -44,6 +44,42 @@
       }
     }
 
+    @keyframes rotateSlow {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rotateFast {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
+    @keyframes floatUp {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes drawLine {
+      from {
+        stroke-dashoffset: 400;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -311,8 +347,8 @@
     .hero-right {
       flex: 0 0 auto;
       position: relative;
-      width: 180px;
-      height: 180px;
+      width: 240px;
+      height: 240px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -321,21 +357,70 @@
     .hero-right::before {
       content: '';
       position: absolute;
-      width: 140px;
-      height: 140px;
-      border: 2px solid var(--accent);
-      border-radius: 0;
-      animation: rotateIn 0.8s ease-out 0.2s both;
+      width: 180px;
+      height: 180px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      animation: rotateSlow 12s linear 0.2s infinite;
+      opacity: 0.6;
     }
 
     .hero-right::after {
       content: '';
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
+      border: 1.5px solid var(--accent);
+      border-radius: 0;
+      animation: rotateFast 8s linear 0.4s infinite;
+      opacity: 0.8;
+    }
+
+    .hero-right-inner {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: floatUp 4s ease-in-out 0.6s infinite;
+    }
+
+    .hero-right-inner::before {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
       border: 2px solid var(--accent);
       border-radius: 50%;
-      animation: pulse 3s ease-in-out 0.4s infinite;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .hero-right-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: fadeIn 0.6s ease-out 0.3s both;
+    }
+
+    .hero-right-dot:nth-child(2) {
+      top: 20px;
+      right: 30px;
+      animation-delay: 0.4s;
+    }
+
+    .hero-right-dot:nth-child(3) {
+      bottom: 40px;
+      right: 20px;
+      animation-delay: 0.5s;
+    }
+
+    .hero-right-dot:nth-child(4) {
+      top: 50%;
+      right: 0px;
+      animation-delay: 0.6s;
     }
 
     .hero h1 {
@@ -832,7 +917,13 @@
       <h1>tracking company<br>signals.<br><span>predicting market<br>moves.</span></h1>
       <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
     </div>
-    <div class="hero-right"></div>
+    <div class="hero-right">
+      <div class="hero-right-inner"></div>
+      <div class="hero-right-dot"></div>
+      <div class="hero-right-dot"></div>
+      <div class="hero-right-dot"></div>
+      <div class="hero-right-dot"></div>
+    </div>
   </div>
 
   <div class="grid-section">
