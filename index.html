@@ -1242,8 +1242,8 @@
       const yScale = chartHeight / dauRange;
       const getYPos = (dau) => padding.top + chartHeight - (dau - minDAU) * yScale;
 
-      // Calculate X positions
-      const xScale = chartWidth / (dauData.length - 1);
+      // Calculate X positions for 12 weeks
+      const xScale = chartWidth / (12 - 1); // 12 weeks total
       const getXPos = (index) => padding.left + index * xScale;
 
       let svg = '';
@@ -1257,8 +1257,8 @@
         svg += `<text x="${padding.left - 6}" y="${y + 3}" font-size="9" text-anchor="end" class="axis-label">${dau.toFixed(1)}M</text>`;
       }
 
-      // Draw X axis labels (every other week)
-      for (let i = 0; i < dauData.length; i += 2) {
+      // Draw X axis labels (every other week for all 12 weeks)
+      for (let i = 0; i < 12; i += 2) {
         const x = getXPos(i);
         const y = 160 - padding.bottom + 14;
         svg += `<text x="${x}" y="${y}" font-size="9" text-anchor="middle" class="axis-label">${dauData[i].week}</text>`;
