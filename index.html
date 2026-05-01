@@ -1188,20 +1188,39 @@
       }
     }
 
-    // Reddit DAU weekly data (in millions)
-    const dauData = [
-      { week: 'W1', dau: 52.1 },
-      { week: 'W2', dau: 54.3 },
-      { week: 'W3', dau: 53.8 },
-      { week: 'W4', dau: 56.2 },
-      { week: 'W5', dau: 58.7 },
-      { week: 'W6', dau: 57.4 },
-      { week: 'W7', dau: 61.2 },
-      { week: 'W8', dau: 63.9 },
-      { week: 'W9', dau: 62.5 },
-      { week: 'W10', dau: 66.1 },
-      { week: 'W11', dau: 68.4 },
-    ];
+    // Reddit DAU weekly data (in millions) - Q2 2026 (12 weeks)
+    // This data is populated by the AI agent and stored in localStorage
+    // Weeks 1-4 are complete (4 weeks into Q2), weeks 5-12 pending
+    const dauData = (() => {
+      const stored = localStorage.getItem('reddit_dau_q2_2026');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      // Default: Weeks 1-4 with sample data, 5-12 empty
+      return [
+        { week: 'W1', dau: 52.3 },
+        { week: 'W2', dau: 53.8 },
+        { week: 'W3', dau: 54.1 },
+        { week: 'W4', dau: 55.2 },
+        { week: 'W5', dau: null },
+        { week: 'W6', dau: null },
+        { week: 'W7', dau: null },
+        { week: 'W8', dau: null },
+        { week: 'W9', dau: null },
+        { week: 'W10', dau: null },
+        { week: 'W11', dau: null },
+        { week: 'W12', dau: null },
+      ];
+    })();
+
+    // Function for AI agent to update DAU data
+    window.updateRedditDAU = (weekNumber, dauValue) => {
+      if (weekNumber >= 1 && weekNumber <= 12) {
+        dauData[weekNumber - 1].dau = dauValue;
+        localStorage.setItem('reddit_dau_q2_2026', JSON.stringify(dauData));
+        renderDAUChart();
+      }
+    };
 
     // Render DAU chart
     function renderDAUChart() {
@@ -1210,9 +1229,13 @@
       const chartWidth = 400 - padding.left - padding.right;
       const chartHeight = 160 - padding.top - padding.bottom;
 
-      const minDAU = Math.min(...dauData.map(d => d.dau));
-      const maxDAU = Math.max(...dauData.map(d => d.dau));
-      const dauRange = maxDAU - minDAU;
+      // Only calculate range from non-null values
+      const validData = dauData.filter(d => d.dau !== null);
+      if (validData.length === 0) return;
+
+      const minDAU = Math.min(...validData.map(d => d.dau));
+      const maxDAU = Math.max(...validData.map(d => d.dau));
+      const dauRange = maxDAU - minDAU || 1;
 
       // Calculate Y positions
       const yScale = chartHeight / dauRange;
@@ -1240,15 +1263,18 @@
         svg += `<text x="${x}" y="${y}" font-size="9" text-anchor="middle" class="axis-label">${dauData[i].week}</text>`;
       }
 
-      // Draw polyline
-      const points = dauData.map((d, i) => `${getXPos(i)},${getYPos(d.dau)}`).join(' ');
-      svg += `<polyline points="${points}" fill="none" stroke="#e63422" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+      // Draw polyline (only connecting non-null values)
+      const validIndices = dauData.map((d, i) => d.dau !== null ? i : null).filter(i => i !== null);
+      if (validIndices.length > 0) {
+        const points = validIndices.map(i => `${getXPos(i)},${getYPos(dauData[i].dau)}`).join(' ');
+        svg += `<polyline points="${points}" fill="none" stroke="#e63422" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
 
-      // Draw data points
-      for (let i = 0; i < dauData.length; i++) {
-        const x = getXPos(i);
-        const y = getYPos(dauData[i].dau);
-        svg += `<circle cx="${x}" cy="${y}" r="3" fill="#e63422"/>`;
+        // Draw data points
+        for (const i of validIndices) {
+          const x = getXPos(i);
+          const y = getYPos(dauData[i].dau);
+          svg += `<circle cx="${x}" cy="${y}" r="3" fill="#e63422"/>`;
+        }
       }
 
       chart.innerHTML = svg;
