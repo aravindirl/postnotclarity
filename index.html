@@ -430,31 +430,6 @@
       margin-top: 1.5rem;
     }
 
-    .hero-right {
-      flex: 0 0 auto;
-      position: relative;
-      width: 400px;
-      height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(90deg, rgba(232, 255, 0, 0.05) 0%, rgba(232, 255, 0, 0.02) 100%);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeIn 0.6s ease-out 0.2s forwards;
-    }
-
-    body.light-mode .hero-right {
-      background: linear-gradient(90deg, rgba(229, 57, 53, 0.05) 0%, rgba(229, 57, 53, 0.02) 100%);
-    }
-
-    .hero-right svg {
-      width: 100%;
-      height: 100%;
-    }
-
     .heartbeat-wave {
       fill: none;
       stroke: var(--accent);
@@ -772,21 +747,6 @@
       border-color: var(--accent);
     }
 
-    .hero-right > div:nth-child(2) {
-      color: #c8f400;
-    }
-
-    .hero-right svg polyline {
-      stroke: #c8f400;
-    }
-
-    body.light-mode .hero-right > div:nth-child(2) {
-      color: #e63422;
-    }
-
-    body.light-mode .hero-right svg polyline {
-      stroke: #e63422;
-    }
 
     /* Mobile Responsive Design */
     @media (max-width: 768px) {
