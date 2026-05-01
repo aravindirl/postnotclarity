@@ -11,6 +11,17 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    @keyframes slideInLine {
+      from {
+        width: 0;
+        opacity: 0;
+      }
+      to {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -254,6 +265,17 @@
     .hero {
       padding: 4.5rem 4rem 2rem;
       max-width: 900px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--accent);
+      width: 60px;
+      margin-top: 1.5rem;
+      animation: slideInLine 0.8s ease-out 0.3s both;
     }
 
     .hero h1 {
@@ -575,8 +597,17 @@
         gap: 12px;
       }
 
+      .nav-logo {
+        width: 52px;
+        height: 52px;
+      }
+
       .nav-name {
         font-size: 14px;
+      }
+
+      .nav-label {
+        font-size: 16px;
       }
 
       .nav svg {
@@ -646,8 +677,17 @@
         padding: 1.25rem 1rem;
       }
 
+      .nav-logo {
+        width: 48px;
+        height: 48px;
+      }
+
       .nav-name {
         font-size: 13px;
+      }
+
+      .nav-label {
+        font-size: 14px;
       }
 
       .nav svg {
