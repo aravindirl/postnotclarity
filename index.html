@@ -100,6 +100,15 @@
       }
     }
 
+    @keyframes spiralRotate {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -452,6 +461,7 @@
       height: 200px;
       pointer-events: none;
       z-index: 1;
+      animation: spiralRotate 20s linear 2.5s infinite;
     }
 
     .golden-spiral svg {
