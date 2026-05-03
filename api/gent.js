@@ -133,10 +133,10 @@ Respond ONLY with a valid JSON object. No markdown, no preamble, no explanation 
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        'anthropic-version': '2024-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 4000,
         tools: [
           {
@@ -155,6 +155,8 @@ Respond ONLY with a valid JSON object. No markdown, no preamble, no explanation 
     });
 
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('API Error:', response.status, errorData);
       return res.status(500).json({ error: 'agent failed' });
     }
 
@@ -176,6 +178,7 @@ Respond ONLY with a valid JSON object. No markdown, no preamble, no explanation 
 
     res.status(200).json(parsed);
   } catch (error) {
+    console.error('Agent error:', error.message);
     res.status(500).json({ error: 'agent failed' });
   }
 }
