@@ -1144,15 +1144,113 @@
 
     renderNotes();
 
-    // ── RUN BUTTON (placeholder for now) ──────────────────
-    document.getElementById('run-btn').addEventListener('click', () => {
+    // ── RUN BUTTON ──────────────────────────────────────────
+    document.getElementById('run-btn').addEventListener('click', async () => {
       const btn = document.getElementById('run-btn');
-      btn.textContent = 'agent coming soon — backend not connected yet';
-      btn.style.color = '#444';
-      setTimeout(() => {
-        btn.textContent = 'run agent analysis →';
-        btn.style.color = '';
-      }, 3000);
+
+      // Disable button and show loading state
+      btn.disabled = true;
+      btn.textContent = 'agent is researching... this takes 30-60 seconds';
+
+      try {
+        // Make POST request to /api/agent
+        const response = await fetch('/api/agent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+
+        const data = await response.json();
+
+        // Mapping of signals to card element IDs
+        const signalMap = {
+          'google_visibility': {
+            pill: 'pill-google',
+            body: 'body-google',
+            find: 'find-google'
+          },
+          'web_traffic': {
+            pill: 'pill-traffic',
+            body: 'body-traffic',
+            find: 'find-traffic'
+          },
+          'app_store': {
+            pill: 'pill-appstore',
+            body: 'body-appstore',
+            find: 'find-appstore'
+          },
+          'reddit_product': {
+            pill: 'pill-product',
+            body: 'body-product',
+            find: 'find-product'
+          }
+        };
+
+        // Fill in the signal cards
+        Object.entries(signalMap).forEach(([signalKey, ids]) => {
+          const signal = data.signals[signalKey];
+          if (!signal) return;
+
+          // Update pill with rating and CSS class
+          const pillEl = document.getElementById(ids.pill);
+          pillEl.textContent = signal.rating.toUpperCase();
+          pillEl.className = `pill ${signal.rating}`;
+
+          // Update card body with what_i_found
+          const bodyEl = document.getElementById(ids.body);
+          bodyEl.textContent = signal.what_i_found;
+
+          // Show key finding with matching border color
+          const findEl = document.getElementById(ids.find);
+          findEl.textContent = signal.key_finding;
+          findEl.style.display = 'block';
+
+          // Set border color based on rating
+          if (signal.rating === 'bullish') {
+            findEl.style.borderLeftColor = '#1D9E75';
+          } else if (signal.rating === 'bearish') {
+            findEl.style.borderLeftColor = '#E24B4A';
+          } else {
+            findEl.style.borderLeftColor = '#1a1a1a';
+          }
+        });
+
+        // Fill the verdict box
+        const verdictEl = document.getElementById('verdict');
+        const verdict = data.verdict;
+
+        verdictEl.innerHTML = `
+          <div class="verdict-left">
+            <p class="v-label">Thesis</p>
+            <p class="v-text">${data.thesis}</p>
+          </div>
+          <div class="verdict-right">
+            <p class="v-label">DAU Range</p>
+            <p class="v-range">${verdict.dau_range}</p>
+            <p class="v-label" style="margin-top: 1.5rem;">Direction</p>
+            <p class="v-text">${verdict.direction}</p>
+            <p class="v-label" style="margin-top: 0.75rem;">Confidence</p>
+            <p class="v-text">${verdict.confidence}</p>
+          </div>
+        `;
+
+        // Re-enable button with new text
+        btn.disabled = false;
+        btn.textContent = 're-run agent analysis →';
+
+      } catch (error) {
+        // Handle error: show error message and re-enable after 3 seconds
+        btn.textContent = 'agent failed — try again';
+        setTimeout(() => {
+          btn.textContent = 'run agent analysis →';
+          btn.disabled = false;
+        }, 3000);
+      }
     });
   </script>
 </body>
