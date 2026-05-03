@@ -156,8 +156,8 @@ Respond ONLY with a valid JSON object. No markdown, no preamble, no explanation 
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error('API Error:', response.status, errorData);
-      return res.status(500).json({ error: 'agent failed' });
+      console.error('API Error:', response.status, JSON.stringify(errorData, null, 2));
+      return res.status(500).json({ error: 'agent failed', details: errorData });
     }
 
     const data = await response.json();
@@ -178,7 +178,7 @@ Respond ONLY with a valid JSON object. No markdown, no preamble, no explanation 
 
     res.status(200).json(parsed);
   } catch (error) {
-    console.error('Agent error:', error.message);
-    res.status(500).json({ error: 'agent failed' });
+    console.error('Agent error:', error.message, error.stack);
+    res.status(500).json({ error: 'agent failed', details: error.message });
   }
 }
