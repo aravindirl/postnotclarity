@@ -1,12 +1,12 @@
 {
   "buildCommand": "",
-  "outputDirectory": ".",
+  "outputDirectory": "public",
   "devCommand": "npx http-server",
   "cleanUrls": true,
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/index.html"
     }
   ]
 }
