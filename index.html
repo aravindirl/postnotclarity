@@ -3,303 +3,1295 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PredTracker 🎯</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+  <title>PNC Research</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a' stroke='%23E8FF00' stroke-width='3'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='%23E8FF00' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='%23E8FF00' font-family='Arial'>?</text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0d0d0d; color: #ebebeb; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-    input[type=date]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; }
-    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-    select option { background: #1f1f1f; }
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+    @keyframes slideInLine {
+      from {
+        width: 0;
+        opacity: 0;
+      }
+      to {
+        width: 100%;
+        opacity: 1;
+      }
+    }
+
+    @keyframes rotateIn {
+      from {
+        opacity: 0;
+        transform: rotate(-45deg) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes rotateSlow {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rotateFast {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
+    @keyframes floatUp {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes drawLine {
+      from {
+        stroke-dashoffset: 400;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes drawSpiral {
+      from {
+        stroke-dashoffset: 800;
+        opacity: 0;
+      }
+      to {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+    }
+
+    @keyframes spiralGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+      50% {
+        filter: drop-shadow(0 0 8px var(--accent));
+      }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% {
+        opacity: 0.6;
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+      50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 6px var(--accent));
+      }
+    }
+
+    @keyframes pulseWave {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInCard {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111;
+      --bg3: #161616;
+      --accent: #E8FF00;
+      --text: #e0e0e0;
+      --dim: #2a2a2a;
+      --border: #1a1a1a;
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --bg2: #f5f5f5;
+      --bg3: #efefef;
+      --accent: #E53935;
+      --text: #1a1a1a;
+      --dim: #e8e8e8;
+      --border: #ddd;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 4rem;
+      border-bottom: 0.5px solid var(--border);
+      gap: 2rem;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-name {
+      font-size: 15px;
+      color: #f0f0f0;
+      letter-spacing: 0.02em;
+      font-weight: 500;
+    }
+
+    .nav-right {
+      font-size: 12px;
+      color: #999;
+      letter-spacing: 0.06em;
+    }
+
+    .nav-logo {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(232, 255, 0, 0.15), 0 0 0 1px rgba(232, 255, 0, 0.2);
+      padding: 3px;
+    }
+
+    .nav-label {
+      color: #f0f0f0;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    body.light-mode .nav-logo {
+      box-shadow: 0 2px 8px rgba(229, 57, 53, 0.15), 0 0 0 1px rgba(229, 57, 53, 0.2);
+    }
+
+    body.light-mode .nav-logo path,
+    body.light-mode .nav-logo text {
+      stroke: #E53935;
+      fill: #E53935;
+    }
+
+    body.light-mode .nav-label {
+      color: #000000;
+    }
+
+    body.light-mode .nav-name {
+      color: #1a1a1a;
+    }
+
+    body.light-mode .nav-right {
+      color: #555555;
+    }
+
+    body.light-mode .theme-toggle {
+      border-color: #ddd;
+      color: #666;
+    }
+
+    body.light-mode .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    body.light-mode .hero h1 {
+      color: #000000;
+    }
+
+    body.light-mode .hero p {
+      color: #666666;
+    }
+
+    body.light-mode .kpi-type {
+      color: #333333;
+    }
+
+    body.light-mode .kpi-metric {
+      color: #444444;
+    }
+
+    body.light-mode .kpi-meta {
+      color: #333333;
+    }
+
+    body.light-mode .kpi-metric {
+      color: #555555;
+    }
+
+    body.light-mode .kpi-value {
+      color: var(--accent);
+    }
+
+    body.light-mode .nav-label {
+      color: #000000;
+    }
+
+    body.light-mode .company-name {
+      color: #1a1a1a;
+    }
+
+    body.light-mode .kpi-type {
+      color: #555555;
+    }
+
+    body.light-mode .status-badge {
+      background: #efefef;
+      color: #555555;
+    }
+
+    body.light-mode .status-badge.live {
+      background: rgba(229, 57, 53, 0.1);
+      color: var(--accent);
+    }
+
+    .nav-label {
+      color: #f0f0f0;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-home {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-home:hover {
+      opacity: 0.9;
+    }
+
+    .nav-home:hover .nav-logo {
+      box-shadow: 0 4px 12px rgba(232, 255, 0, 0.25), 0 0 0 1px rgba(232, 255, 0, 0.3);
+    }
+
+    body.light-mode .nav-home:hover .nav-logo {
+      box-shadow: 0 4px 12px rgba(229, 57, 53, 0.25), 0 0 0 1px rgba(229, 57, 53, 0.3);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 0.5px solid var(--border);
+      color: #999;
+      font-size: 11px;
+      padding: 6px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      text-transform: uppercase;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .hero {
+      padding: 1.5rem 4rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 3rem;
+      max-width: 1400px;
+      overflow: visible;
+    }
+
+    .hero-left {
+      flex: 1;
+      position: relative;
+    }
+
+    .hero-left::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--accent);
+      width: 100px;
+      margin-top: 0.75rem;
+      animation: slideInLine 0.8s ease-out 0.3s both;
+    }
+
+    .hero-right {
+      flex: 0 0 500px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: visible;
+      opacity: 0;
+      animation: fadeIn 0.6s ease-out 0.2s forwards;
+      margin-top: -0.5rem;
+    }
+
+    .sparkline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sparkline-label {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+
+    .sparkline-value {
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 0.95;
+    }
+
+    .sparkline-subtitle {
+      font-size: 13px;
+      color: #aaa;
+      letter-spacing: 0.02em;
+      margin-top: -0.5rem;
+    }
+
+    .sparkline-chart {
+      width: 100%;
+      height: 120px;
+      margin-top: 1.5rem;
+    }
+
+    .heartbeat-wave {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      animation: pulseWave 3s linear infinite, heartbeat 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 2px var(--accent));
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 64px);
+      font-weight: 700;
+      color: #f0f0f0;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      animation: fadeInUp 0.7s ease-out;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 14px;
+      color: #999;
+      letter-spacing: 0.3px;
+      font-weight: 500;
+      animation: fadeInUp 0.7s ease-out 0.1s both;
+    }
+
+    .grid-section {
+      padding: 2rem 4rem;
+    }
+
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 100%;
+    }
+
+    .company-card {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-height: auto;
+      text-decoration: none;
+      color: inherit;
+      animation: fadeInCard 0.6s ease-out both;
+    }
+
+    .company-card:nth-child(1) { animation-delay: 0.15s; }
+    .company-card:nth-child(2) { animation-delay: 0.25s; }
+    .company-card:nth-child(3) { animation-delay: 0.35s; }
+    .company-card:nth-child(4) { animation-delay: 0.45s; }
+    .company-card:nth-child(5) { animation-delay: 0.55s; }
+    .company-card:nth-child(6) { animation-delay: 0.65s; }
+    .company-card:nth-child(7) { animation-delay: 0.75s; }
+    .company-card:nth-child(8) { animation-delay: 0.85s; }
+
+    .company-card:hover {
+      border-color: var(--accent);
+      background: var(--bg3);
+      transform: translateY(-3px);
+    }
+
+    .company-card.live:hover {
+      background: rgba(232, 255, 0, 0.04);
+    }
+
+    .company-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .company-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: capitalize;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.02em;
+    }
+
+    .kpi-type {
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .kpi-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 1.25rem;
+      margin-top: 0;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 12px;
+      padding: 0.5rem 0;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .kpi-row:last-child {
+      border-bottom: none;
+    }
+
+    .kpi-metric {
+      color: #999;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .kpi-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .kpi-meta {
+      display: none;
+    }
+    }
+
+    .company-card.frozen:hover {
+      border-color: #1a1a1a;
+      background: #111;
+    }
+
+    .card-header {
+      display: flex;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .company-logo {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 6px;
+    }
+
+    .card-info {
+      flex: 1;
+    }
+
+    .company-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #f0f0f0;
+      margin-bottom: 4px;
+    }
+
+    .metric {
+      font-size: 12px;
+      color: #aaa;
+      letter-spacing: 0.03em;
+    }
+
+    .card-status {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .status-badge {
+      font-size: 10px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      background: #1a1a1a;
+      color: #aaa;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .status-badge.live {
+      background: rgba(232, 255, 0, 0.1);
+      color: var(--accent);
+    }
+
+    .company-card.frozen {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none;
+      border-style: dashed;
+      filter: grayscale(0.5);
+    }
+
+    .company-card.frozen:hover {
+      border-color: var(--border);
+      background: var(--bg2);
+      transform: none;
+    }
+
+    body.light-mode .company-card.frozen {
+      opacity: 0.35;
+    }
+
+    body.light-mode .sparkline-label {
+      color: #555555;
+    }
+
+    body.light-mode .sparkline-subtitle {
+      color: #888888;
+    }
+
+    .footer {
+      padding: 2rem 4rem;
+      text-align: center;
+      border-top: 0.5px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    .footer p {
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.03em;
+    }
+
+    body.light-mode .footer p {
+      color: #888;
+    }
+
+    .about {
+      padding: 3rem 4rem;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .about p {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.85;
+      max-width: 600px;
+    }
+
+    .about a {
+      color: #bbb;
+      text-decoration: none;
+      border-bottom: 0.5px solid #3a3a3a;
+      padding-bottom: 1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .about a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .logo-small {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .about-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .about-item:not(:first-child) {
+      margin-top: 6px;
+    }
+
+    body.light-mode .about-item {
+      color: #888;
+    }
+
+    body.light-mode .about p {
+      color: #555;
+    }
+
+    body.light-mode .about a {
+      color: #666;
+      border-bottom-color: #ccc;
+    }
+
+    body.light-mode .about a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .gridline {
+      stroke: #2a2a2a;
+    }
+
+    body.light-mode .gridline {
+      stroke: #eee;
+    }
+
+    .axis-label {
+      fill: #666;
+    }
+
+    body.light-mode .axis-label {
+      fill: #aaa;
+    }
+
+
+    /* Mobile Responsive Design */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1.5rem 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-left {
+        gap: 12px;
+      }
+
+      .nav-logo {
+        width: 64px;
+        height: 64px;
+      }
+
+      .nav-name {
+        font-size: 14px;
+      }
+
+      .nav-label {
+        font-size: 16px;
+      }
+
+      .nav svg {
+        width: 30px;
+        height: 18px;
+      }
+
+      .hero {
+        padding: 2.5rem 1.5rem 1.25rem;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .hero-right {
+        flex: 0 0 100%;
+        margin-top: 2rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(28px, 5vw, 42px);
+      }
+
+      .hero p {
+        font-size: 12px;
+      }
+
+      .grid-section {
+        padding: 1.5rem 1.5rem;
+      }
+
+      .company-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+      }
+
+      .company-card {
+        padding: 1.25rem;
+        min-height: 160px;
+      }
+
+      .company-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .company-name {
+        font-size: 16px;
+      }
+
+      .card-header {
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .about {
+        padding: 2rem 1.5rem;
+        gap: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .about p {
+        font-size: 12px;
+      }
+
+      .about-right {
+        width: 100%;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        padding: 1.25rem 1rem;
+      }
+
+      .nav-logo {
+        width: 68px;
+        height: 68px;
+      }
+
+      .nav-name {
+        font-size: 13px;
+      }
+
+      .nav-label {
+        font-size: 14px;
+      }
+
+      .nav svg {
+        width: 28px;
+        height: 16px;
+      }
+
+      .hero {
+        padding: 2rem 1rem 1rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(24px, 5vw, 36px);
+      }
+
+      .grid-section {
+        padding: 1rem;
+      }
+
+      .company-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .company-card {
+        padding: 1rem;
+        min-height: 140px;
+      }
+
+      .company-logo {
+        width: 36px;
+        height: 36px;
+      }
+
+      .company-name {
+        font-size: 15px;
+      }
+
+      .metric {
+        font-size: 11px;
+      }
+
+      .status-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
+      .about {
+        padding: 1.5rem 1rem;
+      }
+
+      .about p {
+        font-size: 11px;
+        line-height: 1.7;
+      }
+    }
   </style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-    const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine } = Recharts;
+  <nav class="nav">
+    <a href="/" class="nav-home">
+      <svg class="nav-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" fill="#0a0a0a"/>
+        <path d="M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50" stroke="#E8FF00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="80" y="62" font-size="24" font-weight="bold" fill="#E8FF00" font-family="Arial">?</text>
+      </svg>
+      <span class="nav-label">POST NOT CLARITY</span>
+    </a>
+    <button class="theme-toggle" id="theme-toggle">light</button>
+  </nav>
 
-    const KEY = "predtracker-v1";
-    const PLATFORMS = ["Kalshi", "Polymarket", "Metaculus", "Manifold", "Other"];
-    const C = {
-      bg: "#0d0d0d", card: "#161616", card2: "#202020",
-      border: "#2c2c2c", text: "#ebebeb", muted: "#666",
-      green: "#22c55e", red: "#ef4444", yellow: "#f59e0b", purple: "#a855f7",
+  <div class="hero">
+    <div class="hero-left">
+      <h1>tracking company<br>signals.<br><span>predicting market<br>moves.</span></h1>
+      <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
+    </div>
+    <div class="hero-right">
+      <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">REDDIT DAU · Q2 2026 WEEKLY TRACKER · LIVE</div>
+      <div style="font-size: 48px; font-weight: 700; color: #e63422; margin-bottom: 1.5rem; margin-top: 0.5rem;">+14.3%</div>
+      <div style="font-size: 11px; color: #aaa; margin-bottom: 1.5rem;">avg prediction confidence this week</div>
+      <svg id="dau-chart" viewBox="0 0 400 160" width="100%" height="160" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+        <!-- Chart will be populated by JavaScript -->
+      </svg>
+    </div>
+  </div>
+
+  <div class="grid-section">
+    <div class="company-grid">
+      <!-- Reddit -->
+      <a href="/reddit" class="company-card live">
+        <img class="company-logo" src="https://img.logo.dev/reddit.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="reddit" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=reddit.com&sz=128'">
+        <div class="company-name">reddit</div>
+        <div class="kpi-type">Daily Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">DAU (Q2 2026)</span>
+            <span class="kpi-value">—</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-metric">Last Updated</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge live">● live</span>
+        </div>
+      </a>
+
+      <!-- Uber -->
+      <div class="company-card frozen">
+        <img class="company-logo" src="https://img.logo.dev/uber.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="uber" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=uber.com&sz=128'">
+        <div class="company-name">uber</div>
+        <div class="kpi-type">Trips</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">KPI</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming soon</span>
+        </div>
+      </div>
+
+      <!-- Netflix -->
+      <div class="company-card frozen">
+        <img class="company-logo" src="https://img.logo.dev/netflix.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="netflix" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=netflix.com&sz=128'">
+        <div class="company-name">netflix</div>
+        <div class="kpi-type">Subscribers</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">KPI</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming soon</span>
+        </div>
+      </div>
+
+      <!-- Meta -->
+      <div class="company-card frozen">
+        <img class="company-logo" src="https://img.logo.dev/meta.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="meta" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=meta.com&sz=128'">
+        <div class="company-name">meta</div>
+        <div class="kpi-type">Daily Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">KPI</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming soon</span>
+        </div>
+      </div>
+
+      <!-- Spotify -->
+      <div class="company-card frozen">
+        <img class="company-logo" src="https://img.logo.dev/spotify.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="spotify" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=spotify.com&sz=128'">
+        <div class="company-name">spotify</div>
+        <div class="kpi-type">Monthly Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">KPI</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming soon</span>
+        </div>
+      </div>
+
+      <!-- Tinder -->
+      <div class="company-card frozen">
+        <img class="company-logo" src="https://img.logo.dev/tinder.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="tinder" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=tinder.com&sz=128'">
+        <div class="company-name">tinder</div>
+        <div class="kpi-type">Paying Active Users</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">KPI</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming soon</span>
+        </div>
+      </div>
+
+      <!-- FedEx -->
+      <div class="company-card frozen">
+        <img class="company-logo" src="https://img.logo.dev/www.fedex.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="fedex" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=fedex.com&sz=128'">
+        <div class="company-name">fedex</div>
+        <div class="kpi-type">Revenue</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">KPI</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming soon</span>
+        </div>
+      </div>
+
+      <!-- Airbnb -->
+      <div class="company-card frozen">
+        <img class="company-logo" src="https://img.logo.dev/airbnb.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="airbnb" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=airbnb.com&sz=128'">
+        <div class="company-name">airbnb</div>
+        <div class="kpi-type">Active Listings</div>
+        <div class="kpi-details">
+          <div class="kpi-row">
+            <span class="kpi-metric">KPI</span>
+            <span class="kpi-value">—</span>
+          </div>
+        </div>
+        <div class="card-status">
+          <span class="status-badge">coming soon</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about">
+    <p>I run an AI agent against public signals to estimate where company KPIs are headed each quarter. Built for Kalshi prediction markets, updated weekly. If you want to reach me — <a href="https://aravindirl.com" target="_blank">aravindirl.com</a>.</p>
+    <div class="about-right">
+      <div class="about-item">
+        <span>signals by</span>
+        <img class="logo-small" src="https://img.logo.dev/claude.ai?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="claude" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=claude.ai&sz=128'">
+        <span>claude</span>
+      </div>
+      <div class="about-item">
+        <span>built for</span>
+        <img class="logo-small" src="https://img.logo.dev/kalshi.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="kalshi" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=kalshi.com&sz=128'">
+        <span>kalshi</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 postnotclarity. all rights reserved.</p>
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Load theme preference from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+      body.classList.add('light-mode');
+      themeToggle.textContent = 'dark';
+    } else {
+      themeToggle.textContent = 'light';
+    }
+    updateFavicon();
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Toggle theme on T key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 't') {
+        toggleTheme();
+      }
+    });
+
+    function updateFavicon() {
+      const isLight = body.classList.contains('light-mode');
+      const accentColor = isLight ? '%23E53935' : '%23E8FF00';
+      const bgColor = isLight ? '%23000000' : '%230a0a0a';
+      const strokeColor = isLight ? '2' : '3';
+
+      const faviconSvg = `%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='${bgColor}' stroke='${accentColor}' stroke-width='${strokeColor}'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='${accentColor}' stroke-width='${strokeColor}' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='${accentColor}' font-family='Arial'>?</text%3E%3C/svg%3E`;
+
+      const faviconLink = document.querySelector('link[rel="icon"]');
+      faviconLink.href = `data:image/svg+xml,${faviconSvg}`;
+    }
+
+    function toggleTheme() {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      themeToggle.textContent = isLight ? 'dark' : 'light';
+      updateFavicon();
+    }
+
+    // Sparkline update function
+    function updateSparkline(dataPoints, label, value, subtitle) {
+      // dataPoints should be an array of numbers (0-100)
+      const labelEl = document.getElementById('sparkline-label');
+      const valueEl = document.getElementById('sparkline-value');
+      const subtitleEl = document.getElementById('sparkline-subtitle');
+      const pathEl = document.getElementById('sparkline-path');
+
+      if (labelEl) labelEl.textContent = label;
+      if (valueEl) valueEl.textContent = value;
+      if (subtitleEl) subtitleEl.textContent = subtitle;
+
+      if (pathEl && dataPoints.length > 0) {
+        const width = 400;
+        const height = 100;
+        const padding = 15;
+        const pointSpacing = width / (dataPoints.length - 1 || 1);
+
+        const points = dataPoints.map((point, i) => {
+          const x = i * pointSpacing;
+          const y = height - (point / 100 * (height - padding * 2)) - padding;
+          return `${x},${y}`;
+        }).join(' ');
+
+        pathEl.setAttribute('points', points);
+      }
+    }
+
+    // Reddit DAU weekly data (in millions) - Q2 2026 (12 weeks)
+    // This data is populated by the AI agent and stored in localStorage
+    // Weeks 1-4 are complete (4 weeks into Q2), weeks 5-12 pending
+    const dauData = (() => {
+      const stored = localStorage.getItem('reddit_dau_q2_2026');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      // Default: Weeks 1-4 with sample data, 5-12 empty
+      return [
+        { week: 'W1', dau: 52.3 },
+        { week: 'W2', dau: 53.8 },
+        { week: 'W3', dau: 54.1 },
+        { week: 'W4', dau: 55.2 },
+        { week: 'W5', dau: null },
+        { week: 'W6', dau: null },
+        { week: 'W7', dau: null },
+        { week: 'W8', dau: null },
+        { week: 'W9', dau: null },
+        { week: 'W10', dau: null },
+        { week: 'W11', dau: null },
+        { week: 'W12', dau: null },
+      ];
+    })();
+
+    // Function for AI agent to update DAU data
+    window.updateRedditDAU = (weekNumber, dauValue) => {
+      if (weekNumber >= 1 && weekNumber <= 12) {
+        dauData[weekNumber - 1].dau = dauValue;
+        localStorage.setItem('reddit_dau_q2_2026', JSON.stringify(dauData));
+        renderDAUChart();
+      }
     };
 
-    const fmtUSD = n => "$" + Math.abs(n).toLocaleString("en-US");
-    const fmtDate = d => { try { return new Date(d + "T12:00:00").toLocaleDateString("en-US", { day: "numeric", month: "short", year: "2-digit" }); } catch { return d; } };
-    const df = () => ({ market: "", platform: "Kalshi", direction: "YES", amount: "", date: new Date().toISOString().slice(0, 10) });
+    // Render DAU chart
+    function renderDAUChart() {
+      const chart = document.getElementById('dau-chart');
+      const padding = { left: 48, right: 12, top: 12, bottom: 28 };
+      const chartWidth = 400 - padding.left - padding.right;
+      const chartHeight = 160 - padding.top - padding.bottom;
 
-    const btnSm = c => ({ flex: 1, padding: "6px", border: `1px solid ${c}`, borderRadius: 7, background: c + "20", color: c, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" });
-    const btnAction = c => ({ flex: 1, padding: "8px", border: `1px solid ${c}`, borderRadius: 8, background: c + "18", color: c, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" });
+      // Only calculate range from non-null values
+      const validData = dauData.filter(d => d.dau !== null);
+      if (validData.length === 0) return;
 
-    function PredCard({ p, onResolve, onUnresolve, onDelete, mini }) {
-      const [confirmDel, setConfirmDel] = useState(false);
-      const rc = p.result === "WIN" ? C.green : p.result === "LOSS" ? C.red : C.yellow;
-      const rl = p.result === "WIN" ? "🚀 WIN" : p.result === "LOSS" ? "💀 LOSS" : "⏳ Pending";
-      const bc = p.result === "WIN" ? C.green + "50" : p.result === "LOSS" ? C.red + "50" : C.border;
-      return (
-        <div style={{ background: C.card, border: `1px solid ${bc}`, borderRadius: 12, padding: "12px 14px", marginBottom: 10 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 7 }}>
-            <div style={{ flex: 1, marginRight: 10 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.4, color: C.text }}>{p.market}</div>
-              <div style={{ fontSize: 11, color: C.muted, marginTop: 2 }}>{p.platform} · {fmtDate(p.date)}</div>
-            </div>
-            <span style={{ background: rc + "25", color: rc, borderRadius: 6, padding: "3px 8px", fontSize: 11, fontWeight: 700, whiteSpace: "nowrap" }}>{rl}</span>
-          </div>
-          <div style={{ display: "flex", gap: 6, marginBottom: mini ? 6 : 10 }}>
-            <span style={{ background: (p.direction === "YES" ? C.green : C.red) + "22", color: p.direction === "YES" ? C.green : C.red, borderRadius: 6, padding: "2px 8px", fontSize: 11, fontWeight: 700 }}>
-              {p.direction === "YES" ? "🟢 YES" : "🔴 NO"}
-            </span>
-            <span style={{ background: "#ffffff12", color: C.text, borderRadius: 6, padding: "2px 8px", fontSize: 11, fontWeight: 700 }}>
-              {fmtUSD(p.amount)}
-            </span>
-          </div>
-          {!p.result && mini && (
-            <div style={{ display: "flex", gap: 7 }}>
-              <button onClick={() => onResolve(p.id, "WIN")} style={btnSm(C.green)}>WIN</button>
-              <button onClick={() => onResolve(p.id, "LOSS")} style={btnSm(C.red)}>LOSS</button>
-            </div>
-          )}
-          {!p.result && !mini && (
-            <div style={{ display: "flex", gap: 7 }}>
-              <button onClick={() => onResolve(p.id, "WIN")} style={btnAction(C.green)}>🚀 Mark WIN</button>
-              <button onClick={() => onResolve(p.id, "LOSS")} style={btnAction(C.red)}>💀 Mark LOSS</button>
-              <button onClick={() => confirmDel ? onDelete(p.id) : setConfirmDel(true)} style={{ padding: "8px 11px", border: `1px solid ${confirmDel ? C.red : C.border}`, borderRadius: 8, background: "transparent", color: confirmDel ? C.red : C.muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
-                {confirmDel ? "Sure?" : "🗑"}
-              </button>
-            </div>
-          )}
-          {p.result && !mini && (
-            <div style={{ display: "flex", gap: 7 }}>
-              <button onClick={() => onUnresolve(p.id)} style={{ flex: 1, padding: "7px", border: `1px solid ${C.border}`, borderRadius: 8, background: "transparent", color: C.muted, fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>↩ Undo result</button>
-              <button onClick={() => confirmDel ? onDelete(p.id) : setConfirmDel(true)} style={{ padding: "7px 11px", border: `1px solid ${confirmDel ? C.red : C.border}`, borderRadius: 8, background: "transparent", color: confirmDel ? C.red : C.muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
-                {confirmDel ? "Sure?" : "🗑"}
-              </button>
-            </div>
-          )}
-        </div>
-      );
+      const minDAU = Math.min(...validData.map(d => d.dau));
+      const maxDAU = Math.max(...validData.map(d => d.dau));
+      const dauRange = maxDAU - minDAU || 1;
+
+      // Calculate Y positions
+      const yScale = chartHeight / dauRange;
+      const getYPos = (dau) => padding.top + chartHeight - (dau - minDAU) * yScale;
+
+      // Calculate X positions for 12 weeks
+      const xScale = chartWidth / (12 - 1); // 12 weeks total
+      const getXPos = (index) => padding.left + index * xScale;
+
+      let svg = '';
+
+      // Draw 4 horizontal gridlines
+      const gridCount = 4;
+      for (let i = 0; i <= gridCount; i++) {
+        const y = padding.top + (i * chartHeight / gridCount);
+        const dau = maxDAU - (i * dauRange / gridCount);
+        svg += `<line x1="${padding.left}" y1="${y}" x2="${400 - padding.right}" y2="${y}" class="gridline" stroke-width="0.5"/>`;
+        svg += `<text x="${padding.left - 6}" y="${y + 3}" font-size="9" text-anchor="end" class="axis-label">${dau.toFixed(1)}M</text>`;
+      }
+
+      // Draw X axis labels (every other week for all 12 weeks)
+      for (let i = 0; i < 12; i += 2) {
+        const x = getXPos(i);
+        const y = 160 - padding.bottom + 14;
+        svg += `<text x="${x}" y="${y}" font-size="9" text-anchor="middle" class="axis-label">${dauData[i].week}</text>`;
+      }
+
+      // Draw polyline (only connecting non-null values)
+      const validIndices = dauData.map((d, i) => d.dau !== null ? i : null).filter(i => i !== null);
+      if (validIndices.length > 0) {
+        const points = validIndices.map(i => `${getXPos(i)},${getYPos(dauData[i].dau)}`).join(' ');
+        svg += `<polyline points="${points}" fill="none" stroke="#e63422" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+        // Draw data points
+        for (const i of validIndices) {
+          const x = getXPos(i);
+          const y = getYPos(dauData[i].dau);
+          svg += `<circle cx="${x}" cy="${y}" r="3" fill="#e63422"/>`;
+        }
+      }
+
+      chart.innerHTML = svg;
     }
 
-    function App() {
-      const [preds, setPreds] = useState(() => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } });
-      const [tab, setTab] = useState("dash");
-      const [form, setForm] = useState(df());
-      const [flt, setFlt] = useState("all");
-      const [formErr, setFormErr] = useState("");
-
-      useEffect(() => { try { localStorage.setItem(KEY, JSON.stringify(preds)); } catch {} }, [preds]);
-
-      const addPred = () => {
-        if (!form.market.trim()) { setFormErr("Enter a market question"); return; }
-        if (!form.amount || +form.amount <= 0) { setFormErr("Enter a valid amount"); return; }
-        const p = { id: Date.now(), ...form, amount: +form.amount, result: null, resolvedAt: null };
-        setPreds(prev => [p, ...prev]);
-        setForm(df()); setFormErr(""); setTab("history");
-      };
-      const resolve = (id, result) => setPreds(prev => prev.map(p => p.id === id ? { ...p, result, resolvedAt: new Date().toISOString() } : p));
-      const unresolve = id => setPreds(prev => prev.map(p => p.id === id ? { ...p, result: null, resolvedAt: null } : p));
-      const del = id => setPreds(prev => prev.filter(p => p.id !== id));
-
-      const resolved = preds.filter(p => p.result);
-      const pending = preds.filter(p => !p.result);
-      const wins = resolved.filter(p => p.result === "WIN");
-      const losses = resolved.filter(p => p.result === "LOSS");
-      const totalRisked = preds.reduce((s, p) => s + p.amount, 0);
-      const pnl = wins.reduce((s, p) => s + p.amount, 0) - losses.reduce((s, p) => s + p.amount, 0);
-      const winRate = resolved.length ? Math.round(wins.length / resolved.length * 100) : null;
-      const pendingRisk = pending.reduce((s, p) => s + p.amount, 0);
-
-      const chartData = (() => {
-        if (!resolved.length) return [];
-        const sorted = [...resolved].sort((a, b) => new Date(a.resolvedAt) - new Date(b.resolvedAt));
-        let cum = 0;
-        const pts = [{ lbl: "Start", pnl: 0 }];
-        sorted.forEach(p => { cum += p.result === "WIN" ? p.amount : -p.amount; pts.push({ lbl: fmtDate(p.date), pnl: cum }); });
-        return pts;
-      })();
-
-      const displayPreds = flt === "pending" ? pending : flt === "resolved" ? resolved : preds;
-      const mood = winRate === null ? "🤔" : winRate >= 65 ? "🔥" : winRate >= 50 ? "😎" : winRate >= 35 ? "😬" : "💀";
-
-      const card = { background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: "14px 16px", marginBottom: 10 };
-      const lbl = { fontSize: 10, color: C.muted, fontWeight: 700, letterSpacing: 0.8, textTransform: "uppercase", marginBottom: 5, display: "block" };
-      const inp = { width: "100%", background: C.card2, border: `1px solid ${C.border}`, borderRadius: 8, padding: "11px 12px", color: C.text, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "inherit" };
-
-      return (
-        <div style={{ background: C.bg, minHeight: "100vh", color: C.text, fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: 72 }}>
-          {/* Header */}
-          <div style={{ padding: "16px 16px 14px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, background: C.bg, zIndex: 50 }}>
-            <div>
-              <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: -0.5 }}>🎯 PredTracker</div>
-              <div style={{ fontSize: 11, color: C.muted, marginTop: 1 }}>{preds.length} bets · {pending.length} pending</div>
-            </div>
-            <div style={{ fontSize: 28 }}>{mood}</div>
-          </div>
-
-          <div style={{ padding: "16px 16px 0" }}>
-            {/* DASHBOARD */}
-            {tab === "dash" && (
-              <div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
-                  {[
-                    { label: "Total Risked", val: fmtUSD(totalRisked), color: C.text, sub: `${preds.length} bets` },
-                    { label: "P&L", val: resolved.length ? `${pnl >= 0 ? "+" : "-"}${fmtUSD(pnl)}` : "—", color: pnl > 0 ? C.green : pnl < 0 ? C.red : C.text, sub: resolved.length ? `${wins.length}W · ${losses.length}L resolved` : "No results yet" },
-                    { label: "Win Rate", val: winRate !== null ? `${winRate}%` : "—", color: winRate === null ? C.text : winRate >= 60 ? C.green : winRate >= 40 ? C.yellow : C.red, sub: resolved.length ? `${wins.length} wins of ${resolved.length}` : "Make some bets" },
-                    { label: "Pending", val: String(pending.length), color: pending.length > 0 ? C.yellow : C.muted, sub: pending.length ? `${fmtUSD(pendingRisk)} at risk` : "All resolved" },
-                  ].map(({ label, val, color, sub }) => (
-                    <div key={label} style={card}>
-                      <span style={lbl}>{label}</span>
-                      <div style={{ fontSize: 22, fontWeight: 800, color, lineHeight: 1.2 }}>{val}</div>
-                      <div style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>{sub}</div>
-                    </div>
-                  ))}
-                </div>
-                {chartData.length > 1 ? (
-                  <div style={card}>
-                    <span style={lbl}>Cumulative P&L</span>
-                    <div style={{ height: 150, marginTop: 8 }}>
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
-                          <XAxis dataKey="lbl" tick={{ fill: C.muted, fontSize: 9 }} axisLine={false} tickLine={false} interval="preserveStartEnd" />
-                          <YAxis tick={{ fill: C.muted, fontSize: 9 }} axisLine={false} tickLine={false}
-                            tickFormatter={v => { const a = Math.abs(v); return `${v < 0 ? "-" : ""}$${a >= 1000 ? (a / 1000).toFixed(1) + "k" : a}`; }} width={44} />
-                          <Tooltip contentStyle={{ background: C.card2, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 12, color: C.text }}
-                            formatter={v => [`${v >= 0 ? "+" : "-"}${fmtUSD(v)}`, "P&L"]} labelStyle={{ color: C.muted }} />
-                          <ReferenceLine y={0} stroke={C.border} strokeDasharray="4 4" />
-                          <Line type="monotone" dataKey="pnl" stroke={pnl >= 0 ? C.green : C.red} strokeWidth={2.5}
-                            dot={{ r: 3, fill: pnl >= 0 ? C.green : C.red, stroke: "none" }} activeDot={{ r: 5, fill: pnl >= 0 ? C.green : C.red }} />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-                ) : (
-                  <div style={{ ...card, textAlign: "center", padding: "28px 20px" }}>
-                    <div style={{ fontSize: 36, marginBottom: 8 }}>📈</div>
-                    <div style={{ color: C.muted, fontSize: 13 }}>P&L chart appears after first resolved bet</div>
-                    <div style={{ color: "#444", fontSize: 11, marginTop: 4 }}>Mark a bet WIN or LOSS to see your curve</div>
-                  </div>
-                )}
-                {preds.length > 0 ? (
-                  <>
-                    <div style={{ ...lbl, marginTop: 4, marginBottom: 8 }}>Recent</div>
-                    {preds.slice(0, 3).map(p => <PredCard key={p.id} p={p} onResolve={resolve} onUnresolve={unresolve} onDelete={del} mini />)}
-                    {preds.length > 3 && (
-                      <button onClick={() => setTab("history")} style={{ width: "100%", background: "none", border: `1px solid ${C.border}`, borderRadius: 9, padding: "10px", color: C.muted, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
-                        View all {preds.length} predictions →
-                      </button>
-                    )}
-                  </>
-                ) : (
-                  <div style={{ ...card, textAlign: "center", padding: "40px 20px", marginTop: 4 }}>
-                    <div style={{ fontSize: 48, marginBottom: 12 }}>🎯</div>
-                    <div style={{ fontWeight: 700, fontSize: 16 }}>No predictions yet</div>
-                    <div style={{ color: C.muted, fontSize: 13, marginTop: 6 }}>Tap ➕ Add to log your first bet</div>
-                    <div style={{ color: "#444", fontSize: 11, marginTop: 4 }}>Track your edge, not just your vibes</div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* ADD */}
-            {tab === "add" && (
-              <div>
-                <div style={{ fontWeight: 700, fontSize: 17, marginBottom: 18 }}>New Prediction</div>
-                <div style={{ marginBottom: 14 }}>
-                  <span style={lbl}>Market / Question</span>
-                  <input style={inp} placeholder="e.g. Will BTC hit $100k by Dec 2025?" value={form.market}
-                    onChange={e => { setForm(f => ({ ...f, market: e.target.value })); setFormErr(""); }} />
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
-                  <div>
-                    <span style={lbl}>Platform</span>
-                    <select style={{ ...inp, appearance: "none", WebkitAppearance: "none" }} value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}>
-                      {PLATFORMS.map(p => <option key={p} value={p}>{p}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <span style={lbl}>Date</span>
-                    <input type="date" style={inp} value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
-                  </div>
-                </div>
-                <div style={{ marginBottom: 14 }}>
-                  <span style={lbl}>Your Prediction</span>
-                  <div style={{ display: "flex", gap: 8 }}>
-                    {["YES", "NO"].map(d => (
-                      <button key={d} onClick={() => setForm(f => ({ ...f, direction: d }))}
-                        style={{ flex: 1, padding: "13px 0", border: `2px solid ${form.direction === d ? (d === "YES" ? C.green : C.red) : C.border}`, borderRadius: 9, background: form.direction === d ? (d === "YES" ? "#22c55e18" : "#ef444418") : "transparent", color: form.direction === d ? (d === "YES" ? C.green : C.red) : C.muted, fontSize: 14, fontWeight: 800, cursor: "pointer", fontFamily: "inherit" }}>
-                        {d === "YES" ? "🟢  YES" : "🔴  NO"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ marginBottom: 20 }}>
-                  <span style={lbl}>Paper Money ($)</span>
-                  <input style={inp} type="number" placeholder="500" value={form.amount}
-                    onChange={e => { setForm(f => ({ ...f, amount: e.target.value })); setFormErr(""); }} />
-                </div>
-                {formErr && <div style={{ color: C.red, fontSize: 12, marginBottom: 12, marginTop: -8 }}>⚠ {formErr}</div>}
-                <button onClick={addPred} style={{ width: "100%", padding: "14px", background: C.purple, border: "none", borderRadius: 10, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
-                  🎯 Add Prediction
-                </button>
-              </div>
-            )}
-
-            {/* HISTORY */}
-            {tab === "history" && (
-              <div>
-                <div style={{ display: "flex", gap: 6, marginBottom: 14, overflowX: "auto", paddingBottom: 2 }}>
-                  {[
-                    { key: "all", label: `All (${preds.length})` },
-                    { key: "pending", label: `⏳ Pending (${pending.length})` },
-                    { key: "resolved", label: `✅ Resolved (${resolved.length})` },
-                  ].map(f => (
-                    <button key={f.key} onClick={() => setFlt(f.key)}
-                      style={{ padding: "6px 13px", borderRadius: 20, whiteSpace: "nowrap", border: `1px solid ${flt === f.key ? C.purple : C.border}`, background: flt === f.key ? "#a855f720" : "transparent", color: flt === f.key ? C.purple : C.muted, fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>
-                      {f.label}
-                    </button>
-                  ))}
-                </div>
-                {displayPreds.length === 0 ? (
-                  <div style={{ ...card, textAlign: "center", padding: "36px 20px" }}>
-                    <div style={{ fontSize: 36, marginBottom: 8 }}>🔍</div>
-                    <div style={{ color: C.muted, fontSize: 13 }}>Nothing here yet</div>
-                  </div>
-                ) : (
-                  displayPreds.map(p => <PredCard key={p.id} p={p} onResolve={resolve} onUnresolve={unresolve} onDelete={del} />)
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Bottom Nav */}
-          <nav style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: C.card, borderTop: `1px solid ${C.border}`, display: "flex", zIndex: 100 }}>
-            {[
-              { id: "dash", icon: "📊", label: "Dashboard" },
-              { id: "add", icon: "➕", label: "Add" },
-              { id: "history", icon: "📋", label: "History" },
-            ].map(n => (
-              <button key={n.id} onClick={() => setTab(n.id)}
-                style={{ flex: 1, padding: "10px 8px 13px", border: "none", background: "none", color: tab === n.id ? C.purple : C.muted, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 2, fontSize: 10, fontWeight: tab === n.id ? 700 : 500, fontFamily: "inherit", borderTop: `2px solid ${tab === n.id ? C.purple : "transparent"}` }}>
-                <span style={{ fontSize: 20 }}>{n.icon}</span>
-                <span>{n.label}</span>
-              </button>
-            ))}
-          </nav>
-        </div>
-      );
-    }
-
-    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    // Render chart on load
+    renderDAUChart();
   </script>
 </body>
 </html>

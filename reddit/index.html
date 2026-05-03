@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PNC Research</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0a' stroke='%23E8FF00' stroke-width='3'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='%23E8FF00' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='%23E8FF00' font-family='Arial'>?</text%3E%3C/svg%3E" id="favicon-link" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111;
+      --bg3: #161616;
+      --accent: #E8FF00;
+      --bull: #1D9E75;
+      --bear: #E24B4A;
+      --text: #e0e0e0;
+      --border: #1a1a1a;
+      --border2: #222;
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --bg2: #f5f5f5;
+      --bg3: #efefef;
+      --accent: #E53935;
+      --bull: #1D9E75;
+      --bear: #E24B4A;
+      --text: #1a1a1a;
+      --border: #ddd;
+      --border2: #ccc;
+    }
+
+    body.light-mode .nav-label {
+      color: #000000;
+    }
+
+    body.light-mode .nav-name {
+      color: #1a1a1a;
+    }
+
+    body.light-mode .header-left h1 {
+      color: #000000;
+    }
+
+    body.light-mode .header-left .label {
+      color: #555555;
+    }
+
+    body.light-mode .header-right .label {
+      color: #444444;
+    }
+
+    body.light-mode .header-right .num {
+      color: #000000;
+    }
+
+    body.light-mode .header-right .yoy {
+      color: #555555;
+    }
+
+    body.light-mode .signal-card .signal-name {
+      color: #000000;
+    }
+
+    body.light-mode .signal-card .signal-desc {
+      color: #555555;
+    }
+
+    body.light-mode .signal-card .signal-value {
+      color: #000000;
+    }
+
+    body.light-mode .pill {
+      color: #333333;
+    }
+
+    body.light-mode .pill.neutral {
+      background: #efefef;
+      color: #333333;
+    }
+
+    body.light-mode .verdict-left .v-label {
+      color: #333333;
+    }
+
+    body.light-mode .verdict-right .v-label {
+      color: #333333;
+    }
+
+    body.light-mode .verdict-right .v-range {
+      color: #000000;
+    }
+
+    body.light-mode .verdict-right .v-text {
+      color: #333333;
+    }
+
+    body.light-mode .card {
+      background: #f5f5f5;
+      border-color: #ddd;
+    }
+
+    body.light-mode .card:hover {
+      background: #efefef;
+      border-color: var(--accent);
+    }
+
+    body.light-mode .card-label {
+      color: #666;
+    }
+
+    body.light-mode .card-body {
+      color: #666;
+    }
+
+    body.light-mode .card-finding {
+      color: #666;
+      border-color: #ddd;
+    }
+
+    body.light-mode .pill.neutral {
+      background: #efefef;
+      color: #666;
+    }
+
+    body.light-mode .verdict {
+      background: #f5f5f5;
+      border-color: #ddd;
+    }
+
+    body.light-mode .verdict:hover {
+      background: #efefef;
+      border-color: var(--accent);
+    }
+
+    body.light-mode .verdict-placeholder {
+      color: #666;
+    }
+
+    body.light-mode .verdict-left .v-label,
+    body.light-mode .verdict-right .v-label {
+      color: #666;
+    }
+
+    body.light-mode .verdict-left .v-text {
+      color: #555;
+    }
+
+    body.light-mode .j-date {
+      color: #666666;
+    }
+
+    body.light-mode .j-input {
+      background: #fafafa;
+      color: #1a1a1a;
+      border-color: #ddd;
+    }
+
+    body.light-mode .j-input::placeholder {
+      color: #999999;
+    }
+
+    body.light-mode .j-input:focus {
+      border-color: #999;
+      background: #ffffff;
+    }
+
+    body.light-mode .j-time {
+      color: #666666;
+    }
+
+    body.light-mode .j-btn {
+      border-color: #ddd;
+      color: #1a1a1a;
+    }
+
+    body.light-mode .j-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(229, 57, 53, 0.05);
+    }
+
+    body.light-mode .chart-wrap {
+      background: #f5f5f5;
+      border-color: #ddd;
+    }
+
+    body.light-mode .section-label {
+      color: #666;
+    }
+
+    body.light-mode .note-row {
+      border-bottom-color: #ddd;
+    }
+
+    body.light-mode .note-date {
+      color: #666;
+    }
+
+    body.light-mode .note-text {
+      color: #555;
+    }
+
+    body.light-mode .note-del {
+      color: #999;
+    }
+
+    body.light-mode .notes-empty {
+      color: #888;
+    }
+
+    body.light-mode .journal-entry .entry-date {
+      color: #333333;
+    }
+
+    body.light-mode .journal-entry .entry-text {
+      color: #333333;
+    }
+
+    body.light-mode .bottom-bar span {
+      color: #555555;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+    }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2.5rem 4rem;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .nav-name { font-size: 15px; color: #f0f0f0; font-weight: 500; display: none; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .nav-right:hover {
+      opacity: 0.85;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(232, 255, 0, 0.15), 0 0 0 1px rgba(232, 255, 0, 0.2);
+      padding: 4px;
+      transition: all 0.15s;
+    }
+
+    body.light-mode .nav-logo {
+      box-shadow: 0 2px 8px rgba(229, 57, 53, 0.15), 0 0 0 1px rgba(229, 57, 53, 0.2);
+    }
+
+    .nav-right:hover .nav-logo {
+      box-shadow: 0 4px 12px rgba(232, 255, 0, 0.25), 0 0 0 1px rgba(232, 255, 0, 0.3);
+    }
+
+    body.light-mode .nav-right:hover .nav-logo {
+      box-shadow: 0 4px 12px rgba(229, 57, 53, 0.25), 0 0 0 1px rgba(229, 57, 53, 0.3);
+    }
+
+    body.light-mode .nav-logo path,
+    body.light-mode .nav-logo text {
+      stroke: #E53935;
+      fill: #E53935;
+    }
+
+    .nav-label {
+      color: #f0f0f0;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .nav-back {
+      font-size: 13px;
+      color: #666;
+      text-decoration: none;
+      transition: color 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .nav-back:hover { color: var(--accent); }
+
+    .theme-toggle {
+      background: none;
+      border: 0.5px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'IBM Plex Mono', 'Roboto Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .theme-toggle:hover {
+      background: var(--bg3);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 3rem 4rem 2rem;
+      border-bottom: 0.5px solid var(--border);
+      gap: 4rem;
+    }
+
+    .header-left .label {
+      font-size: 10px;
+      color: #999;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .header-left h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 700;
+      color: #f0f0f0;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+      min-width: 200px;
+    }
+
+    .header-right .label {
+      font-size: 10px;
+      color: #999;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .header-right .num {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .header-right .yoy {
+      font-size: 12px;
+      color: #aaa;
+      letter-spacing: 0.02em;
+    }
+
+    /* MAIN */
+    .main {
+      padding: 2.5rem 4rem;
+    }
+
+    /* SIGNAL GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      background: var(--bg3);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-label {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .pill {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .pill.neutral {
+      background: #1a1a1a;
+      color: #999;
+    }
+
+    .pill.bullish {
+      background: rgba(29, 158, 117, 0.15);
+      color: var(--bull);
+    }
+
+    .pill.bearish {
+      background: rgba(226, 75, 74, 0.15);
+      color: var(--bear);
+    }
+
+    .card-body {
+      font-size: 12px;
+      color: #aaa;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .card-finding {
+      display: none;
+      font-size: 12px;
+      color: #999;
+      margin-top: 12px;
+      padding-left: 12px;
+      border-left: 1.5px solid var(--border);
+      line-height: 1.6;
+    }
+
+    /* VERDICT */
+    .verdict {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      min-height: 140px;
+      transition: all 0.25s;
+    }
+
+    .verdict:hover {
+      border-color: var(--accent);
+      background: var(--bg3);
+    }
+
+    .verdict-placeholder {
+      font-size: 12px;
+      color: #999;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .verdict-left {
+      flex: 1;
+    }
+
+    .verdict-left .v-label {
+      font-size: 10px;
+      color: #999;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .verdict-left .v-text {
+      font-size: 12px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .verdict-right {
+      text-align: right;
+      flex-shrink: 0;
+      min-width: 140px;
+    }
+
+    .verdict-right .v-label {
+      font-size: 10px;
+      color: #999;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .verdict-right .v-range {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .verdict-right .v-text {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* BUTTON */
+    .run-btn {
+      width: 100%;
+      background: var(--bg3);
+      border: 0.5px solid #2a2a2a;
+      color: #d0d0d0;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 14px;
+      padding: 1.25rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      letter-spacing: 0.04em;
+      transition: border-color 0.15s, background 0.15s;
+      font-weight: 500;
+    }
+
+    .run-btn:hover {
+      background: #1a1a1a;
+      border-color: #555;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    /* CHART */
+    .chart-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-label {
+      font-size: 10px;
+      color: #999;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 220px;
+      width: 100%;
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+
+    /* JOURNAL */
+    .journal-section {
+      margin-top: 1rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .j-input {
+      flex: 1;
+      background: var(--bg3);
+      border: 0.5px solid var(--border);
+      color: #ccc;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 12px;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      outline: none;
+      transition: all 0.15s;
+    }
+
+    .j-input::placeholder {
+      color: #666;
+    }
+
+    .j-input:focus {
+      border-color: var(--accent);
+      background: var(--bg2);
+    }
+
+    .j-btn {
+      background: none;
+      border: 0.5px solid var(--border);
+      color: #999;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Courier New', monospace;
+      font-size: 12px;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .j-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(232, 255, 0, 0.05);
+    }
+
+    .note-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1rem 0;
+      border-bottom: 0.5px solid var(--border);
+      gap: 1rem;
+    }
+
+    .note-date {
+      font-size: 10px;
+      color: #999;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    .note-text {
+      font-size: 12px;
+      color: #aaa;
+      flex: 1;
+      line-height: 1.6;
+    }
+
+    .note-del {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+
+    .note-del:hover {
+      color: var(--bear);
+    }
+
+    .notes-empty {
+      font-size: 12px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .bottom-bar {
+      padding: 2rem 4rem;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .bottom-bar { position: relative; }
+    .bottom-bar span { font-size: 12px; color: #666; }
+    .bottom-bar span b { color: var(--accent); font-weight: 500; }
+
+    .logo-small {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      border-radius: 4px;
+      object-fit: contain;
+    }
+
+    /* Mobile Responsive Design */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .nav-label {
+        font-size: 16px;
+      }
+
+      .nav-back {
+        align-self: flex-end;
+      }
+
+      .header {
+        flex-direction: column;
+        padding: 2rem 1.5rem;
+        gap: 1.5rem;
+      }
+
+      .header-left h1 {
+        font-size: clamp(22px, 5vw, 32px);
+      }
+
+      .header-right {
+        text-align: left;
+      }
+
+      .header-right .num {
+        font-size: 24px;
+      }
+
+      .main {
+        padding: 1.5rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .card {
+        padding: 1rem;
+      }
+
+      .card-label {
+        font-size: 10px;
+      }
+
+      .card-body {
+        font-size: 12px;
+      }
+
+      .chart-wrap {
+        height: 180px;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      .j-input, .j-btn {
+        width: 100%;
+      }
+
+      .bottom-bar {
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        padding: 1.25rem;
+      }
+
+      .nav-logo {
+        width: 36px;
+        height: 36px;
+      }
+
+      .nav-label {
+        font-size: 14px;
+      }
+
+      .header {
+        padding: 1.5rem 1rem;
+      }
+
+      .header-left h1 {
+        font-size: clamp(18px, 5vw, 26px);
+      }
+
+      .header-left .label, .header-right .label {
+        font-size: 10px;
+      }
+
+      .header-right .num {
+        font-size: 20px;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .grid {
+        gap: 0.75rem;
+      }
+
+      .card {
+        padding: 0.75rem;
+        min-height: auto;
+      }
+
+      .card-label {
+        font-size: 9px;
+      }
+
+      .card-body {
+        font-size: 11px;
+      }
+
+      .pill {
+        font-size: 9px;
+        padding: 2px 6px;
+      }
+
+      .input-row {
+        gap: 0.5rem;
+      }
+
+      .j-input, .j-btn {
+        font-size: 12px;
+        padding: 0.5rem;
+      }
+
+      .note-row {
+        padding: 0.75rem 0;
+      }
+
+      .note-text {
+        font-size: 12px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-left">
+      <a href="/" class="nav-right">
+        <svg class="nav-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" fill="#0a0a0a"/>
+          <path d="M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50" stroke="#E8FF00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="80" y="62" font-size="24" font-weight="bold" fill="#E8FF00" font-family="Arial">?</text>
+        </svg>
+        <span class="nav-label">POST NOT CLARITY</span>
+      </a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="/" class="nav-back">← back to home</a>
+      <button class="theme-toggle" id="theme-toggle">light</button>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <p class="label">kalshi kpi tracker</p>
+      <h1>Reddit DAU — Q2 2026</h1>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- SIGNAL CARDS -->
+    <div class="grid">
+      <div class="card" id="card-google">
+        <div class="card-top">
+          <span class="card-label">google visibility</span>
+          <span class="pill neutral" id="pill-google">—</span>
+        </div>
+        <p class="card-body" id="body-google">awaiting agent run</p>
+        <p class="card-finding" id="find-google"></p>
+      </div>
+
+      <div class="card" id="card-traffic">
+        <div class="card-top">
+          <span class="card-label">web traffic</span>
+          <span class="pill neutral" id="pill-traffic">—</span>
+        </div>
+        <p class="card-body" id="body-traffic">awaiting agent run</p>
+        <p class="card-finding" id="find-traffic"></p>
+      </div>
+
+      <div class="card" id="card-appstore">
+        <div class="card-top">
+          <span class="card-label">app store</span>
+          <span class="pill neutral" id="pill-appstore">—</span>
+        </div>
+        <p class="card-body" id="body-appstore">awaiting agent run</p>
+        <p class="card-finding" id="find-appstore"></p>
+      </div>
+
+      <div class="card" id="card-product">
+        <div class="card-top">
+          <span class="card-label">product news</span>
+          <span class="pill neutral" id="pill-product">—</span>
+        </div>
+        <p class="card-body" id="body-product">awaiting agent run</p>
+        <p class="card-finding" id="find-product"></p>
+      </div>
+    </div>
+
+    <!-- VERDICT -->
+    <div class="verdict" id="verdict">
+      <p class="verdict-placeholder">run the agent to see verdict</p>
+    </div>
+
+    <!-- RUN BUTTON -->
+    <button class="run-btn" id="run-btn">run agent analysis →</button>
+
+    <hr class="divider" />
+
+    <!-- CHART -->
+    <div class="chart-section">
+      <p class="section-label">historical DAU trend</p>
+      <div class="chart-wrap">
+        <canvas id="dauChart"></canvas>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- JOURNAL -->
+    <div class="journal-section">
+      <p class="section-label">weekly observations</p>
+      <div class="input-row">
+        <input class="j-input" id="j-input" type="text" placeholder="what did you notice this week..." />
+        <button class="j-btn" id="j-add">add</button>
+      </div>
+      <div id="notes-list">
+        <p class="notes-empty" id="notes-empty">no observations yet — start tracking weekly</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-bar">
+    <span>v0 · reddit · q2 2026</span>
+    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+      <div class="about-item">
+        <span>signals by</span>
+        <img class="logo-small" src="https://img.logo.dev/claude.ai?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="claude" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=claude.ai&sz=128'">
+        <span>claude</span>
+      </div>
+      <div class="about-item">
+        <span>built for</span>
+        <img class="logo-small" src="https://img.logo.dev/kalshi.com?token=pk_X7oX9KIQT6aFWElPPpMtFQ&size=128&format=png" alt="kalshi" onerror="this.onerror = null; this.src = 'https://www.google.com/s2/favicons?domain=kalshi.com&sz=128'">
+        <span>kalshi</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── THEME TOGGLE ────────────────────────────────────────
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Load theme preference from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+      body.classList.add('light-mode');
+      themeToggle.textContent = 'dark';
+    } else {
+      themeToggle.textContent = 'light';
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Toggle theme on T key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 't') {
+        toggleTheme();
+      }
+    });
+
+    function updateFavicon() {
+      const isLight = body.classList.contains('light-mode');
+      const accentColor = isLight ? '%23E53935' : '%23E8FF00';
+      const bgColor = isLight ? '%23000000' : '%230a0a0a';
+      const strokeColor = isLight ? '2' : '3';
+
+      const faviconSvg = `%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='${bgColor}' stroke='${accentColor}' stroke-width='${strokeColor}'/%3E%3Cpath d='M20,50 L35,50 L40,35 L45,65 L50,50 L60,50 L75,50' stroke='${accentColor}' stroke-width='${strokeColor}' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ctext x='80' y='62' font-size='24' font-weight='bold' fill='${accentColor}' font-family='Arial'>?</text%3E%3C/svg%3E`;
+
+      const faviconLink = document.getElementById('favicon-link');
+      faviconLink.href = `data:image/svg+xml,${faviconSvg}`;
+    }
+
+    updateFavicon();
+
+    function toggleTheme() {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      themeToggle.textContent = isLight ? 'dark' : 'light';
+      updateFavicon();
+    }
+
+    // ── CHART ──────────────────────────────────────────────
+    (function() {
+      const ctx = document.getElementById('dauChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'],
+          datasets: [{
+            label: 'DAU (M)',
+            data: [108.1, 110.4, 116.0, 121.4],
+            borderColor: '#E8FF00',
+            backgroundColor: 'rgba(232,255,0,0.04)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointBackgroundColor: '#E8FF00',
+            borderWidth: 1.5,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: v => v.raw + 'M DAU' } }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255,255,255,0.04)' },
+              ticks: { color: '#666', font: { family: "'SF Mono', 'Monaco', 'Menlo', 'Courier New'", size: 12 } }
+            },
+            y: {
+              grid: { color: 'rgba(255,255,255,0.04)' },
+              ticks: { color: '#666', font: { family: "'SF Mono', 'Monaco', 'Menlo', 'Courier New'", size: 12 }, callback: v => v + 'M' },
+              min: 100, max: 135
+            }
+          }
+        }
+      });
+    })();
+
+    // ── JOURNAL ────────────────────────────────────────────
+    let notes = JSON.parse(localStorage.getItem('pnc-reddit-notes') || '[]');
+
+    function saveNotes() {
+      localStorage.setItem('pnc-reddit-notes', JSON.stringify(notes));
+    }
+
+    function renderNotes() {
+      const list = document.getElementById('notes-list');
+      const empty = document.getElementById('notes-empty');
+      const rows = list.querySelectorAll('.note-row');
+      rows.forEach(r => r.remove());
+
+      if (notes.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+
+      empty.style.display = 'none';
+      notes.forEach(n => {
+        const row = document.createElement('div');
+        row.className = 'note-row';
+        row.innerHTML = `
+          <span class="note-date">${n.date}</span>
+          <span class="note-text">${n.text}</span>
+          <button class="note-del" data-id="${n.id}">×</button>
+        `;
+        list.appendChild(row);
+      });
+
+      list.querySelectorAll('.note-del').forEach(btn => {
+        btn.addEventListener('click', () => {
+          notes = notes.filter(n => n.id !== parseInt(btn.dataset.id));
+          saveNotes();
+          renderNotes();
+        });
+      });
+    }
+
+    function addNote() {
+      const input = document.getElementById('j-input');
+      const text = input.value.trim();
+      if (!text) return;
+      notes.unshift({
+        text,
+        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+        id: Date.now()
+      });
+      input.value = '';
+      saveNotes();
+      renderNotes();
+    }
+
+    document.getElementById('j-add').addEventListener('click', addNote);
+    document.getElementById('j-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') addNote();
+    });
+
+    renderNotes();
+
+    // ── RUN BUTTON (placeholder for now) ──────────────────
+    document.getElementById('run-btn').addEventListener('click', () => {
+      const btn = document.getElementById('run-btn');
+      btn.textContent = 'agent coming soon — backend not connected yet';
+      btn.style.color = '#444';
+      setTimeout(() => {
+        btn.textContent = 'run agent analysis →';
+        btn.style.color = '';
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
