@@ -140,8 +140,8 @@ Respond ONLY with a valid JSON object. No markdown, no preamble, no explanation 
         max_tokens: 4000,
         tools: [
           {
-            type: 'web_search_20250305',
-            name: 'web_search',
+            type: 'builtin_tools',
+            name: 'web_search_20250305',
           },
         ],
         system: systemPrompt,
