@@ -375,12 +375,13 @@
       position: relative;
     }
 
-    .hero-accent-line {
+    .hero-left::after {
+      content: '';
       display: block;
       height: 2px;
       background: var(--accent);
       width: 100px;
-      margin: 0.2rem 0 1.25rem;
+      margin-top: 0.2rem;
       animation: slideInLine 0.8s ease-out 0.3s both;
     }
 
@@ -956,9 +957,8 @@
 
   <div class="hero">
     <div class="hero-left">
-      <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
-      <div class="hero-accent-line"></div>
       <h1>tracking company<br>signals.<br><span>predicting market<br>moves.</span></h1>
+      <p>POST NOT CLARITY · KPI predictions for Kalshi</p>
     </div>
     <div class="hero-right">
       <div style="font-family: 'Space Mono', monospace; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">REDDIT DAU · Q2 2026 WEEKLY TRACKER · LIVE</div>
