@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>quicksauce</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Outfit:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <main class="page">
+      <div class="brand">
+        <svg
+          class="logo"
+          viewBox="0 0 420 210"
+          role="img"
+          aria-labelledby="logo-title"
+        >
+          <title id="logo-title">quicksauce</title>
+          <defs>
+            <path id="wordmark-arc" d="M 36 108 Q 210 8 384 108" />
+            <linearGradient id="bottle-body" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ff6d5a" />
+              <stop offset="55%" stop-color="#e44538" />
+              <stop offset="100%" stop-color="#c8332a" />
+            </linearGradient>
+            <linearGradient id="bottle-shine" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28" />
+              <stop offset="40%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+
+          <text class="wordmark">
+            <textPath href="#wordmark-arc" startOffset="50%" text-anchor="middle">
+              quicksauce
+            </textPath>
+          </text>
+
+          <!-- squeeze bottle lying on its side -->
+          <g transform="translate(70 112)">
+            <ellipse cx="140" cy="50" rx="132" ry="16" fill="#1a0a08" opacity="0.28" />
+            <path
+              d="M28 16c0-10 10-16 22-16h156c10 0 18 6 22 14l18 4c8 2 14 10 14 18s-6 16-14 18l-18 4c-4 8-12 14-22 14H50c-12 0-22-6-22-16V16z"
+              fill="url(#bottle-body)"
+            />
+            <path
+              d="M28 16c0-10 10-16 22-16h70v64H50c-12 0-22-6-22-16V16z"
+              fill="url(#bottle-shine)"
+            />
+            <rect x="92" y="18" width="88" height="36" rx="7" fill="#f6f2ea" />
+            <rect x="102" y="26" width="68" height="7" rx="3.5" fill="#e44538" />
+            <rect x="114" y="38" width="44" height="5" rx="2.5" fill="#d8d2c6" />
+            <rect x="246" y="22" width="32" height="28" rx="8" fill="#ff5c4c" />
+            <rect x="274" y="27" width="16" height="18" rx="6" fill="#c8332a" />
+            <rect x="286" y="31" width="12" height="10" rx="4" fill="#9e241e" />
+            <circle cx="58" cy="24" r="5" fill="#ffffff" opacity="0.25" />
+          </g>
+        </svg>
+      </div>
+
+      <h1 class="headline">SKIP THE YAP!!!</h1>
+
+      <form class="search" action="#" method="get" autocomplete="off">
+        <label class="sr-only" for="youtube-url">YouTube video URL</label>
+        <span class="icon search-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="6.25" stroke="currentColor" stroke-width="1.8" />
+            <path
+              d="M16.2 16.2L20 20"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
+        <input
+          id="youtube-url"
+          name="url"
+          type="url"
+          inputmode="url"
+          placeholder="enter the youtube video url"
+          spellcheck="false"
+        />
+        <button class="icon mic-btn" type="button" aria-label="Voice input">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="9" y="3.5" width="6" height="11" rx="3" stroke="currentColor" stroke-width="1.8" />
+            <path
+              d="M7 11.5a5 5 0 0 0 10 0"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+            <path
+              d="M12 16.5v3.2M9.2 20.2h5.6"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </form>
+    </main>
+  </body>
+</html>
